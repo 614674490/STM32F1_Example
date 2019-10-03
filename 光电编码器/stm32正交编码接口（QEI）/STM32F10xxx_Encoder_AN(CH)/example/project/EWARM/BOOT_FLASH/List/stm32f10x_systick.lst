@@ -1,0 +1,279 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32               15/May/2008  12:06:32 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  thumb                                                #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\FWLib\src\stm32f10x_systick.c        #
+#    Command line    =  "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\FWLib\src\stm32f10x_systick.c" -D    #
+#                       VECT_TAB_FLASH -lcN "C:\David JIANG\ST               #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -lb  #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -o   #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\" -z3   #
+#                       --no_cse --no_unroll --no_inline --no_code_motion    #
+#                       --no_tbaa --no_clustering --no_scheduling --debug    #
+#                       --cpu_mode thumb --endian little --cpu cortex-M3     #
+#                       --stack_align 4 --require_prototypes --fpu None      #
+#                       --dlib_config "C:\Program Files\IAR                  #
+#                       Systems\Embedded Workbench                           #
+#                       4.0\arm\LIB\dl7mptnnl8f.h" -I "C:\David JIANG\ST     #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\" -I "C:\David         #
+#                       JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM                 #
+#                       Encoder\example\project\EWARM\..\include\" -I        #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\..\..\FWLib\inc\" -I   #
+#                       "C:\Program Files\IAR Systems\Embedded Workbench     #
+#                       4.0\arm\INC\"                                        #
+#    List file       =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\stm32f #
+#                       10x_systick.lst                                      #
+#    Object file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\stm32f1 #
+#                       0x_systick.r79                                       #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM Encoder\example\FWLib\src\stm32f10x_systick.c
+      1          /******************** (C) COPYRIGHT 2007 STMicroelectronics ********************
+      2          * File Name          : stm32f10x_systick.c
+      3          * Author             : MCD Application Team
+      4          * Date First Issued  : 09/29/2006
+      5          * Description        : This file provides all the SysTick firmware functions.
+      6          ********************************************************************************
+      7          * History:
+      8          * 05/21/2007: V0.3
+      9          * 04/02/2007: V0.2
+     10          * 02/05/2007: V0.1
+     11          * 09/29/2006: V0.01
+     12          ********************************************************************************
+     13          * THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     14          * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+     15          * AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+     16          * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+     17          * CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+     18          * INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     19          *******************************************************************************/
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "stm32f10x_systick.h"
+     23          
+     24          /* Private typedef -----------------------------------------------------------*/
+     25          /* Private define ------------------------------------------------------------*/
+     26          /* ---------------------- SysTick registers bit mask -------------------- */
+     27          /* CTRL TICKINT Mask */
+     28          #define CTRL_TICKINT_Set      ((u32)0x00000002)
+     29          #define CTRL_TICKINT_Reset    ((u32)0xFFFFFFFD)
+     30          
+     31          /* SysTick Flag Mask */
+     32          #define FLAG_Mask             ((u8)0x1F)
+     33          
+     34          /* Private macro -------------------------------------------------------------*/
+     35          /* Private variables ---------------------------------------------------------*/
+     36          /* Private function prototypes -----------------------------------------------*/
+     37          /* Private functions ---------------------------------------------------------*/
+     38          
+     39          /*******************************************************************************
+     40          * Function Name  : SysTick_CLKSourceConfig
+     41          * Description    : Configures the SysTick clock source.
+     42          * Input          : - SysTick_CLKSource: specifies the SysTick clock source.
+     43          *                    This parameter can be one of the following values:
+     44          *                       - SysTick_CLKSource_HCLK_Div8: AHB clock divided by 8
+     45          *                         selected as SysTick clock source.
+     46          *                       - SysTick_CLKSource_HCLK: AHB clock selected as
+     47          *                         SysTick clock source.
+     48          * Output         : None
+     49          * Return         : None
+     50          *******************************************************************************/
+     51          void SysTick_CLKSourceConfig(u32 SysTick_CLKSource)
+     52          {
+     53            /* Check the parameters */
+     54            assert(IS_SYSTICK_CLK_SOURCE(SysTick_CLKSource));
+     55          
+     56            if (SysTick_CLKSource == SysTick_CLKSource_HCLK)
+     57            {
+     58              SysTick->CTRL |= SysTick_CLKSource_HCLK;
+     59            }
+     60            else
+     61            {
+     62              SysTick->CTRL &= SysTick_CLKSource_HCLK_Div8;
+     63            }
+     64          }
+     65          
+     66          /*******************************************************************************
+     67          * Function Name  : SysTick_SetReload
+     68          * Description    : Sets SysTick Reload value.
+     69          * Input          : - Reload: SysTick Reload new value.
+     70          *                    This parameter must be a number between 1 and 0xFFFFFF.
+     71          * Output         : None
+     72          * Return         : None
+     73          *******************************************************************************/
+     74          void SysTick_SetReload(u32 Reload)
+     75          {
+     76            /* Check the parameters */
+     77            assert(IS_SYSTICK_RELOAD(Reload));
+     78          
+     79            SysTick->LOAD = Reload;
+     80          }
+     81          
+     82          /*******************************************************************************
+     83          * Function Name  : SysTick_CounterCmd
+     84          * Description    : Enables or disables the SysTick counter.
+     85          * Input          : - SysTick_Counter: new state of the SysTick counter.
+     86          *                    This parameter can be one of the following values:
+     87          *                       - SysTick_Counter_Disable: Disable counter
+     88          *                       - SysTick_Counter_Enable: Enable counter
+     89          *                       - SysTick_Counter_Clear: Clear counter value to 0
+     90          * Output         : None
+     91          * Return         : None
+     92          *******************************************************************************/
+     93          void SysTick_CounterCmd(u32 SysTick_Counter)
+     94          {
+     95            /* Check the parameters */
+     96            assert(IS_SYSTICK_COUNTER(SysTick_Counter));
+     97          
+     98            if (SysTick_Counter == SysTick_Counter_Clear)
+     99            {
+    100              SysTick->VAL = SysTick_Counter_Clear;
+    101            }
+    102            else
+    103            {
+    104              if (SysTick_Counter == SysTick_Counter_Enable)
+    105              {
+    106                SysTick->CTRL |= SysTick_Counter_Enable;
+    107              }
+    108              else
+    109              {
+    110                SysTick->CTRL &= SysTick_Counter_Disable;
+    111              }
+    112            }
+    113          }
+    114          
+    115          /*******************************************************************************
+    116          * Function Name  : SysTick_ITConfig
+    117          * Description    : Enables or disables the SysTick Interrupt.
+    118          * Input          : - NewState: new state of the SysTick Interrupt.
+    119          *                    This parameter can be: ENABLE or DISABLE.
+    120          * Output         : None
+    121          * Return         : None
+    122          *******************************************************************************/
+    123          void SysTick_ITConfig(FunctionalState NewState)
+    124          {
+    125            /* Check the parameters */
+    126            assert(IS_FUNCTIONAL_STATE(NewState));
+    127          
+    128            if (NewState != DISABLE)
+    129            {
+    130              SysTick->CTRL |= CTRL_TICKINT_Set;
+    131            }
+    132            else
+    133            {
+    134              SysTick->CTRL &= CTRL_TICKINT_Reset;
+    135            }
+    136          }
+    137          
+    138          /*******************************************************************************
+    139          * Function Name  : SysTick_GetCounter
+    140          * Description    : Gets SysTick counter value.
+    141          * Input          : None
+    142          * Output         : None
+    143          * Return         : SysTick current value
+    144          *******************************************************************************/
+    145          u32 SysTick_GetCounter(void)
+    146          {
+    147            return(SysTick->VAL);
+    148          }
+    149          
+    150          /*******************************************************************************
+    151          * Function Name  : SysTick_GetFlagStatus
+    152          * Description    : Checks whether the specified SysTick flag is set or not.
+    153          * Input          : - SysTick_FLAG: specifies the flag to check.
+    154          *                    This parameter can be one of the following values:
+    155          *                       - SysTick_FLAG_COUNT
+    156          *                       - SysTick_FLAG_SKEW
+    157          *                       - SysTick_FLAG_NOREF
+    158          * Output         : None
+    159          * Return         : None
+    160          *******************************************************************************/
+    161          FlagStatus SysTick_GetFlagStatus(u8 SysTick_FLAG)
+    162          {
+    163            u32 tmp = 0;
+    164            u32 statusreg = 0;
+    165            FlagStatus bitstatus = RESET;
+    166          
+    167            /* Check the parameters */
+    168            assert(IS_SYSTICK_FLAG(SysTick_FLAG));
+    169          
+    170            /* Get the SysTick register index */
+    171            tmp = SysTick_FLAG >> 5;
+    172          
+    173            if (tmp == 1) /* The flag to check is in CTRL register */
+    174            {
+    175              statusreg = SysTick->CTRL;
+    176            }
+    177            else          /* The flag to check is in CALIB register */
+    178            {
+    179              statusreg = SysTick->CALIB;
+    180            }
+    181          
+    182            /* Get the flag position */
+    183            tmp = SysTick_FLAG & FLAG_Mask;
+    184          
+    185            if ((statusreg & ((u32)1 << tmp)) != (u32)RESET)
+    186            {
+    187              bitstatus = SET;
+    188            }
+    189            else
+    190            {
+    191              bitstatus = RESET;
+    192            }
+    193            return bitstatus;
+    194          }
+    195          
+    196          /******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+     Function                CSTACK
+     --------                ------
+     SysTick_CLKSourceConfig     8
+     SysTick_CounterCmd          8
+     SysTick_GetCounter          0
+     SysTick_GetFlagStatus       8
+     SysTick_ITConfig            8
+     SysTick_SetReload           8
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     SysTick_CLKSourceConfig          64
+     SysTick_SetReload                30
+     SysTick_CounterCmd               82
+     SysTick_ITConfig                 60
+     SysTick_GetCounter                8
+     SysTick_GetFlagStatus            82
+     ??DataTable19                     4
+     ??DataTable21                     4
+     ?<Constant "C:\\David JIANG\\ST MCU...">
+                                      92
+      Others                           8
+
+ 
+ 342 bytes in segment CODE
+  92 bytes in segment DATA_C
+ 
+ 334 bytes of CODE  memory (+ 8 bytes shared)
+  92 bytes of CONST memory
+
+Errors: none
+Warnings: none

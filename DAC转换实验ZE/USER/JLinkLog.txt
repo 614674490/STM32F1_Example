@@ -1,0 +1,41 @@
+
+T0008 001:174 SEGGER J-Link V4.96d Log File (0004ms, 0301ms total)
+T0008 001:174 DLL Compiled: Jan 29 2015 11:45:37 (0004ms, 0301ms total)
+T0008 001:174 Logging started @ 2018-07-20 20:26 (0005ms, 0302ms total)
+T0008 001:179 JLINK_SetWarnOutHandler(...) (0000ms, 0302ms total)
+T0008 001:180 JLINK_OpenEx(...)
+Firmware: J-Link ARM-OB STM32 compiled Aug 22 2012 19:52:04
+Hardware: V7.00
+S/N: 20090928
+Feature(s): RDI,FlashDL,FlashBP,JFlash,GDBFull  returns O.K. (0275ms, 0577ms total)
+T0008 001:456 JLINK_SetErrorOutHandler(...) (0000ms, 0577ms total)
+T0008 001:456 JLINK_ExecCommand("ProjectFile = "C:\Users\Dell\Desktop\STM32F1\例程\DAC转换实验ZE\USER\JLinkSettings.ini"", ...)  returns 0x00 (0003ms, 0580ms total)
+T0008 001:459 JLINK_ExecCommand("Device = STM32F103ZE", ...)Device "STM32F103ZE" selected.  returns 0x00 (0001ms, 0581ms total)
+T0008 001:460 JLINK_ExecCommand("DisableConnectionTimeout", ...)  returns 0x01 (0000ms, 0582ms total)
+T0008 001:461 JLINK_GetHardwareVersion()  returns 0x11170 (0000ms, 0582ms total)
+T0008 001:461 JLINK_GetDLLVersion()  returns 49604 (0000ms, 0582ms total)
+T0008 001:461 JLINK_GetFirmwareString(...) (0000ms, 0582ms total)
+T0008 001:461 JLINK_GetDLLVersion()  returns 49604 (0000ms, 0582ms total)
+T0008 001:461 JLINK_GetCompileDateTime() (0001ms, 0583ms total)
+T0008 001:462 JLINK_GetFirmwareString(...) (0000ms, 0583ms total)
+T0008 001:462 JLINK_GetHardwareVersion()  returns 0x11170 (0000ms, 0583ms total)
+T0008 001:462 JLINK_TIF_Select(JLINKARM_TIF_SWD)  returns 0x00 (0001ms, 0584ms total)
+T0008 001:463 JLINK_SetSpeed(10000) (0001ms, 0585ms total)
+T0008 001:464 JLINK_SetResetType(JLINKARM_RESET_TYPE_NORMAL)  returns JLINKARM_RESET_TYPE_NORMAL (0001ms, 0586ms total)
+T0008 001:465 JLINK_Reset() >0x108 TIF>Found SWD-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>STM32Fxxxx: Cannot attach to CPU. Trying connect under reset. >0x108 TIF>Found SWD-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF>
+ >0x0D TIF> >0x21 TIF>
+                JLINK_EMU_HasCapEx(0x0000002C)  returns 0x00 (0000ms, 0000ms total)
+                JLINK_EMU_HasCapEx(0x0000002C)  returns 0x00 (0000ms, 0000ms total)
+              JLINK_GetId() >0x108 TIF>Found SWD-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>STM32Fxxxx: Cannot attach to CPU. Trying connect under reset. >0x108 TIF>Found SWD-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF>
+ >0x0D TIF> >0x21 TIF>
+                JLINK_EMU_HasCapEx(0x0000002C)  returns 0x00 (0000ms, 0000ms total)
+                JLINK_EMU_HasCapEx(0x0000002C)  returns 0x00 (0001ms, 0001ms total)
+                returns 0x00000000 (0129ms, 0834ms total)
+T0008 001:713 JLINK_GetId() >0x108 TIF>Found SWD-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x21 TIF>STM32Fxxxx: Cannot attach to CPU. Trying connect under reset. >0x108 TIF>Found SWD-DP with ID 0x2BA01477 >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x28 TIF> >0x0D TIF> >0x21 TIF>
+ >0x0D TIF> >0x21 TIF>
+                JLINK_EMU_HasCapEx(0x0000002C)  returns 0x00 (0000ms, 0000ms total)
+                returns 0x00000000 (0128ms, 0962ms total)
+T0008 001:861 JLINK_GetFirmwareString(...) (0000ms, 0962ms total)
+T0008 003:121 JLINK_Close() (0002ms, 0964ms total)
+T0008 003:121  (0002ms, 0964ms total)
+T0008 003:121 Closed (0002ms, 0964ms total)

@@ -1,0 +1,1673 @@
+################################################################################
+#                                                                              #
+#      IAR Universal Linker V4.60I/386                                         #
+#                                                                              #
+#           Link time     =  27/Sep/2007  16:12:58                             #
+#           Target CPU    =  ARM                                               #
+#           List file     =  "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\List\Project.map"           #
+#           Output file 1 =  "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Exe\Project.d79"            #
+#                            Format: debug                                     #
+#                            UBROF version 10.0.2                              #
+#                            Using library modules for C-SPY (-rt)             #
+#           Command line  =  "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\cortexm3_macro.r79"     #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\lcd.r79"                #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\main.r79"               #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_can.r79"      #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_flash.r79"    #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_gpio.r79"     #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_it.r79"       #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_lib.r79"      #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_nvic.r79"     #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_rcc.r79"      #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_systick.r79"  #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_tim.r79"      #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Obj\stm32f10x_vector.r79"   #
+#                            -o                                                #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\Exe\Project.d79"            #
+#                            -l                                                #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\BOOT_RAM\List\Project.map"           #
+#                            -xms                                              #
+#                            "-IC:\Program Files\IAR Systems\Embedded Workbenc #
+#                            h 4.0\ARM\LIB\"                                   #
+#                            -f                                                #
+#                            "D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\fi #
+#                            rmware\EWARM\lnkarm_ram.xcl"                      #
+#                            (-DRAMSTART=0x20000000 -DRAMEND=0x20004FFF        #
+#                            -DROMSTART=RAMSTART -DROMEND=RAMEND -carm         #
+#                            -Z(CODE)INTVEC=ROMSTART-ROMEND                    #
+#                            -Z(CODE)ICODE,DIFUNCT=ROMSTART-ROMEND             #
+#                            -Z(CODE)SWITAB=ROMSTART-ROMEND                    #
+#                            -Z(CODE)CODE=ROMSTART-ROMEND                      #
+#                            -Z(CONST)CODE_ID=ROMSTART-ROMEND                  #
+#                            -Z(CONST)INITTAB,DATA_ID,DATA_C=ROMSTART-ROMEND   #
+#                            -Z(CONST)CHECKSUM=ROMSTART-ROMEND                 #
+#                            -Z(DATA)DATA_I,DATA_Z,DATA_N=RAMSTART-RAMEND      #
+#                            -Z(DATA)CODE_I=RAMSTART-RAMEND -QCODE_I=CODE_ID   #
+#                            -D_CSTACK_SIZE=200 -D_HEAP_SIZE=100               #
+#                            -Z(DATA)CSTACK+_CSTACK_SIZE=RAMSTART-RAMEND       #
+#                            -Z(DATA)HEAP+_HEAP_SIZE=RAMSTART-RAMEND) -rt      #
+#                            "C:\Program Files\IAR Systems\Embedded Workbench  #
+#                            4.0\ARM\LIB\dl7mptnnl8f.r79"                      #
+#                            -s __program_start                                #
+#                                                                              #
+#                        Copyright 1987-2007 IAR Systems. All rights reserved. #
+################################################################################
+
+
+
+
+
+                ****************************************
+                *                                      *
+                *           CROSS REFERENCE            *
+                *                                      *
+                ****************************************
+
+       Program entry at :           20000121  Relocatable, from module : ?CMAIN
+
+
+
+
+                ****************************************
+                *                                      *
+                *            RUNTIME MODEL             *
+                *                                      *
+                ****************************************
+
+  StackAlign4            = USED
+  __cpu_mode             = __pcs__thumb
+  __data_model           = absolute
+  __dlib_file_descriptor = 1
+  __endian               = little
+  __rt_version           = 6
+
+
+
+                ****************************************
+                *                                      *
+                *              MODULE MAP              *
+                *                                      *
+                ****************************************
+
+
+  DEFINED ABSOLUTE ENTRIES
+    *************************************************************************
+
+  DEFINED ABSOLUTE ENTRIES
+  PROGRAM MODULE, NAME : ?ABS_ENTRY_MOD
+
+Absolute parts
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _HEAP_SIZE              00000100 
+           _CSTACK_SIZE            00000200 
+           ROMEND                  20004FFF 
+           ROMSTART                20000000 
+           RAMEND                  20004FFF 
+           RAMSTART                20000000 
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\cortexm3_macro.r79
+  PROGRAM MODULE, NAME : cortexm3_macro
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20000150 - 200001BD (0x6e bytes), align: 2
+  Segment part 0. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __WFI                   20000151 
+           __WFE                   20000155 
+           __SEV                   20000159 
+           __ISB                   2000015D 
+           __DSB                   20000163 
+           __DMB                   20000169 
+           __SVC                   2000016F 
+           __MRS_CONTROL           20000173 
+           __MSR_CONTROL           20000179 
+           __MRS_PSP               20000183 
+           __MSR_PSP               20000189 
+           __MRS_MSP               2000018F 
+           __MSR_MSP               20000195 
+           __SETPRIMASK            2000019B 
+           __RESETPRIMASK          2000019F 
+           __SETFAULTMASK          200001A3 
+           __RESETFAULTMASK        200001A7 
+           __BASEPRICONFIG         200001AB 
+           __GetBASEPRI            200001B1 
+           __REV_HalfWord          200001B7 
+           __REV_Word              200001BB 
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\lcd.r79
+  PROGRAM MODULE, NAME : lcd
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_Z
+  Relative segment, address: 20001AC0 - 20001AC7 (0x8 bytes), align: 2
+  Segment part 5.             Intra module refs:   write_char
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           frame                   20001AC0        TIM2_IRQHandler (stm32f10x_it)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AC8 - 20001ACF (0x8 bytes), align: 2
+  Segment part 6.             Intra module refs:   Segment part 13
+                                                   convert
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           digit                   20001AC8 
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 200018B8 - 200018BF (0x8 bytes), align: 2
+  Segment part 2.             Intra module refs:   convert
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 20001ABC - 20001ABE (0x3 bytes), align: 0
+  Segment part 3.             Intra module refs:   convert
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 200018C0 - 200018C7 (0x8 bytes), align: 2
+  Segment part 4.             Intra module refs:   write_char
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 200018C8 - 200018FB (0x34 bytes), align: 2
+  Segment part 8.             Intra module refs:   convert
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           letter                  200018C8 
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 200018FC - 2000190F (0x14 bytes), align: 2
+  Segment part 9.             Intra module refs:   convert
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           number                  200018FC 
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 20001910 - 20001913 (0x4 bytes), align: 2
+  Segment part 10.            Intra module refs:   convert
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           arrow                   20001910 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200001C0 - 200002AF (0xf0 bytes), align: 2
+  Segment part 11.            Intra module refs:   write_char
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           convert                 200001C1 
+               stack 1 = 00000000 ( 00000018 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200002B0 - 20000363 (0xb4 bytes), align: 2
+  Segment part 12.            Intra module refs:   write_string
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           write_char              200002B1 
+               stack 1 = 00000000 ( 00000018 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000364 - 20000367 (0x4 bytes), align: 2
+  Segment part 13.            Intra module refs:   convert
+                                                   write_char
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000368 - 20000385 (0x1e bytes), align: 2
+  Segment part 14.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           write_string            20000369        main (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+INITTAB
+  Relative segment, address: 200018A0 - 200018AB (0xc bytes), align: 2
+  Segment part 17. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?init?tab?DATA_Z        200018A0 
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\main.r79
+  PROGRAM MODULE, NAME : main
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20000388 - 200003B3 (0x2c bytes), align: 2
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           main                    20000389        _main (?CMAIN)
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200003B4 - 20000433 (0x80 bytes), align: 2
+  Segment part 6.             Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_Configuration       200003B5 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000434 - 200004D7 (0xa4 bytes), align: 2
+  Segment part 7.             Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_Configuration      20000435 
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200004D8 - 2000053B (0x64 bytes), align: 2
+  Segment part 8.             Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           NVIC_Configuration      200004D9 
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000053C - 200005C3 (0x88 bytes), align: 2
+  Segment part 9.             Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           LcdShow_Init            2000053D 
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200005C4 - 200005C5 (0x2 bytes), align: 2
+  Segment part 12.            Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CAN_Config              200005C5 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200005C8 - 200005E7 (0x20 bytes), align: 2
+  Segment part 13.            Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SysTick_Config          200005C9 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200005E8 - 200005E9 (0x2 bytes), align: 2
+  Segment part 14.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           assert_failed           200005E9        FLASH_PrefetchBufferCmd (stm32f10x_flash)
+                                                   FLASH_SetLatency (stm32f10x_flash)
+                                                   GPIO_Init (stm32f10x_gpio)
+                                                   GPIO_PinRemapConfig (stm32f10x_gpio)
+                                                   GPIO_ResetBits (stm32f10x_gpio)
+                                                   GPIO_SetBits (stm32f10x_gpio)
+                                                   NVIC_Init (stm32f10x_nvic)
+                                                   NVIC_PriorityGroupConfig (stm32f10x_nvic)
+                                                   NVIC_SetVectorTable (stm32f10x_nvic)
+                                                   NVIC_SystemHandlerPriorityConfig (stm32f10x_nvic)
+                                                   RCC_ADCCLKConfig (stm32f10x_rcc)
+                                                   RCC_APB1PeriphClockCmd (stm32f10x_rcc)
+                                                   RCC_APB2PeriphClockCmd (stm32f10x_rcc)
+                                                   RCC_GetFlagStatus (stm32f10x_rcc)
+                                                   RCC_HCLKConfig (stm32f10x_rcc)
+                                                   RCC_HSEConfig (stm32f10x_rcc)
+                                                   RCC_PCLK1Config (stm32f10x_rcc)
+                                                   RCC_PCLK2Config (stm32f10x_rcc)
+                                                   RCC_PLLCmd (stm32f10x_rcc)
+                                                   RCC_PLLConfig (stm32f10x_rcc)
+                                                   RCC_SYSCLKConfig (stm32f10x_rcc)
+                                                   SysTick_CLKSourceConfig (stm32f10x_systick)
+                                                   SysTick_CounterCmd (stm32f10x_systick)
+                                                   SysTick_ITConfig (stm32f10x_systick)
+                                                   SysTick_SetReload (stm32f10x_systick)
+                                                   TIM_ARRPreloadConfig (stm32f10x_tim)
+                                                   TIM_ClearITPendingBit (stm32f10x_tim)
+                                                   TIM_Cmd (stm32f10x_tim)
+                                                   TIM_GetITStatus (stm32f10x_tim)
+                                                   TIM_ITConfig (stm32f10x_tim)
+                                                   TIM_OC1PreloadConfig (stm32f10x_tim)
+                                                   TIM_OCInit (stm32f10x_tim)
+                                                   TIM_TimeBaseInit (stm32f10x_tim)
+                                                   TIM_UpdateRequestConfig (stm32f10x_tim)
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 20001914 - 2000191B (0x8 bytes), align: 2
+  Segment part 2.             Intra module refs:   main
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_can.r79
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_flash.r79
+  PROGRAM MODULE, NAME : stm32f10x_flash
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 200005EC - 20000623 (0x38 bytes), align: 2
+  Segment part 3.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           FLASH_SetLatency        200005ED        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000624 - 20000657 (0x34 bytes), align: 2
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           FLASH_PrefetchBufferCmd
+                                   20000625        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000658 - 2000065B (0x4 bytes), align: 2
+  Segment part 6.             Intra module refs:   FLASH_PrefetchBufferCmd
+                                                   FLASH_SetLatency
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000065C - 2000065F (0x4 bytes), align: 2
+  Segment part 7.             Intra module refs:   FLASH_PrefetchBufferCmd
+                                                   FLASH_SetLatency
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 2000191C - 2000195F (0x44 bytes), align: 2
+  Segment part 2.             Intra module refs:   Segment part 6
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_gpio.r79
+  PROGRAM MODULE, NAME : stm32f10x_gpio
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20000660 - 20000791 (0x132 bytes), align: 2
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_Init               20000661        GPIO_Configuration (main)
+                                                   TIM2_IRQHandler (stm32f10x_it)
+               stack 1 = 00000000 ( 00000018 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000794 - 200007AF (0x1c bytes), align: 2
+  Segment part 11.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_SetBits            20000795        TIM2_IRQHandler (stm32f10x_it)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200007B0 - 200007C7 (0x18 bytes), align: 2
+  Segment part 12.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_ResetBits          200007B1        TIM2_IRQHandler (stm32f10x_it)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200007C8 - 200007CB (0x4 bytes), align: 2
+  Segment part 14.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_Write              200007C9        TIM2_IRQHandler (stm32f10x_it)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200007CC - 200007CF (0x4 bytes), align: 2
+  Segment part 16.            Intra module refs:   GPIO_Init
+                                                   GPIO_ResetBits
+                                                   GPIO_SetBits
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200007D0 - 200008E3 (0x114 bytes), align: 2
+  Segment part 19.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIO_PinRemapConfig     200007D1        GPIO_Configuration (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200008E4 - 200008E7 (0x4 bytes), align: 2
+  Segment part 21.            Intra module refs:   GPIO_PinRemapConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200008E8 - 200008EB (0x4 bytes), align: 2
+  Segment part 22.            Intra module refs:   GPIO_PinRemapConfig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 20001960 - 2000199F (0x40 bytes), align: 2
+  Segment part 2.             Intra module refs:   Segment part 16
+                                                   Segment part 21
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_it.r79
+  PROGRAM MODULE, NAME : stm32f10x_it
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_C
+  Relative segment, address: 200019A0 - 200019A7 (0x8 bytes), align: 2
+  Segment part 2.             Intra module refs:   TIM2_IRQHandler
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           com                     200019A0 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001B0A - 20001B0A (0x1 bytes), align: 0
+  Segment part 3.             Intra module refs:   TIM2_IRQHandler
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           var                     20001B0A 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001B0B - 20001B0B (0x1 bytes), align: 0
+  Segment part 4.             Intra module refs:   TIM2_IRQHandler
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           lcdcr                   20001B0B 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200008EC - 200008ED (0x2 bytes), align: 2
+  Segment part 6.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           NMIException            200008ED        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200008F0 - 200008F1 (0x2 bytes), align: 2
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           HardFaultException      200008F1        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200008F4 - 200008F5 (0x2 bytes), align: 2
+  Segment part 8.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           MemManageException      200008F5        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200008F8 - 200008F9 (0x2 bytes), align: 2
+  Segment part 9.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           BusFaultException       200008F9        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200008FC - 200008FD (0x2 bytes), align: 2
+  Segment part 10.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           UsageFaultException     200008FD        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000900 - 20000901 (0x2 bytes), align: 2
+  Segment part 11.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DebugMonitor            20000901        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000904 - 20000905 (0x2 bytes), align: 2
+  Segment part 12.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SVCHandler              20000905        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000908 - 20000909 (0x2 bytes), align: 2
+  Segment part 13.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           PendSVC                 20000909        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000090C - 2000090D (0x2 bytes), align: 2
+  Segment part 14.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SysTickHandler          2000090D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000910 - 20000911 (0x2 bytes), align: 2
+  Segment part 15.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           WWDG_IRQHandler         20000911        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000914 - 20000915 (0x2 bytes), align: 2
+  Segment part 16.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           PVD_IRQHandler          20000915        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000918 - 20000919 (0x2 bytes), align: 2
+  Segment part 17.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TAMPER_IRQHandler       20000919        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000091C - 2000091D (0x2 bytes), align: 2
+  Segment part 18.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RTC_IRQHandler          2000091D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000920 - 20000921 (0x2 bytes), align: 2
+  Segment part 19.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           FLASH_IRQHandler        20000921        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000924 - 20000925 (0x2 bytes), align: 2
+  Segment part 20.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_IRQHandler          20000925        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000928 - 20000929 (0x2 bytes), align: 2
+  Segment part 21.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           EXTI0_IRQHandler        20000929        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000092C - 2000092D (0x2 bytes), align: 2
+  Segment part 22.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           EXTI1_IRQHandler        2000092D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000930 - 20000931 (0x2 bytes), align: 2
+  Segment part 23.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           EXTI2_IRQHandler        20000931        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000934 - 20000935 (0x2 bytes), align: 2
+  Segment part 24.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           EXTI3_IRQHandler        20000935        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000938 - 20000939 (0x2 bytes), align: 2
+  Segment part 25.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           EXTI4_IRQHandler        20000939        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000093C - 2000093D (0x2 bytes), align: 2
+  Segment part 26.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DMAChannel1_IRQHandler
+                                   2000093D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000940 - 20000941 (0x2 bytes), align: 2
+  Segment part 27.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DMAChannel2_IRQHandler
+                                   20000941        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000944 - 20000945 (0x2 bytes), align: 2
+  Segment part 28.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DMAChannel3_IRQHandler
+                                   20000945        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000948 - 20000949 (0x2 bytes), align: 2
+  Segment part 29.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DMAChannel4_IRQHandler
+                                   20000949        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000094C - 2000094D (0x2 bytes), align: 2
+  Segment part 30.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DMAChannel5_IRQHandler
+                                   2000094D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000950 - 20000951 (0x2 bytes), align: 2
+  Segment part 31.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DMAChannel6_IRQHandler
+                                   20000951        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000954 - 20000955 (0x2 bytes), align: 2
+  Segment part 32.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           DMAChannel7_IRQHandler
+                                   20000955        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000958 - 20000959 (0x2 bytes), align: 2
+  Segment part 33.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ADC_IRQHandler          20000959        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000095C - 2000095D (0x2 bytes), align: 2
+  Segment part 34.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           USB_HP_CAN_TX_IRQHandler
+                                   2000095D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000960 - 20000961 (0x2 bytes), align: 2
+  Segment part 35.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           USB_LP_CAN_RX0_IRQHandler
+                                   20000961        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000964 - 20000965 (0x2 bytes), align: 2
+  Segment part 36.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CAN_RX1_IRQHandler      20000965        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000968 - 20000969 (0x2 bytes), align: 2
+  Segment part 37.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CAN_SCE_IRQHandler      20000969        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000096C - 2000096D (0x2 bytes), align: 2
+  Segment part 38.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           EXTI9_5_IRQHandler      2000096D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000970 - 20000971 (0x2 bytes), align: 2
+  Segment part 39.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM1_BRK_IRQHandler     20000971        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000974 - 20000975 (0x2 bytes), align: 2
+  Segment part 40.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM1_UP_IRQHandler      20000975        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000978 - 20000979 (0x2 bytes), align: 2
+  Segment part 41.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM1_TRG_COM_IRQHandler
+                                   20000979        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000097C - 2000097D (0x2 bytes), align: 2
+  Segment part 42.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM1_CC_IRQHandler      2000097D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000980 - 20000B17 (0x198 bytes), align: 2
+  Segment part 43.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM2_IRQHandler         20000981        __vector_table (stm32f10x_vector)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001B08 - 20001B09 (0x2 bytes), align: 1
+  Segment part 5.             Intra module refs:   TIM2_IRQHandler
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           TIM2_IRQHandler::Seg_Old
+                                   20001B08 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B18 - 20000B19 (0x2 bytes), align: 2
+  Segment part 44.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM3_IRQHandler         20000B19        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B1C - 20000B1D (0x2 bytes), align: 2
+  Segment part 45.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM4_IRQHandler         20000B1D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B20 - 20000B21 (0x2 bytes), align: 2
+  Segment part 46.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           I2C1_EV_IRQHandler      20000B21        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B24 - 20000B25 (0x2 bytes), align: 2
+  Segment part 47.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           I2C1_ER_IRQHandler      20000B25        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B28 - 20000B29 (0x2 bytes), align: 2
+  Segment part 48.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           I2C2_EV_IRQHandler      20000B29        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B2C - 20000B2D (0x2 bytes), align: 2
+  Segment part 49.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           I2C2_ER_IRQHandler      20000B2D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B30 - 20000B31 (0x2 bytes), align: 2
+  Segment part 50.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SPI1_IRQHandler         20000B31        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B34 - 20000B35 (0x2 bytes), align: 2
+  Segment part 51.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SPI2_IRQHandler         20000B35        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B38 - 20000B39 (0x2 bytes), align: 2
+  Segment part 52.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           USART1_IRQHandler       20000B39        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B3C - 20000B3D (0x2 bytes), align: 2
+  Segment part 53.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           USART2_IRQHandler       20000B3D        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B40 - 20000B41 (0x2 bytes), align: 2
+  Segment part 54.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           USART3_IRQHandler       20000B41        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B44 - 20000B45 (0x2 bytes), align: 2
+  Segment part 55.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           EXTI15_10_IRQHandler    20000B45        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B48 - 20000B49 (0x2 bytes), align: 2
+  Segment part 56.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RTCAlarm_IRQHandler     20000B49        __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B4C - 20000B4D (0x2 bytes), align: 2
+  Segment part 57.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           USBWakeUp_IRQHandler    20000B4D        __vector_table (stm32f10x_vector)
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_lib.r79
+  PROGRAM MODULE, NAME : stm32f10x_lib
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_Z
+  Relative segment, address: 20001AD0 - 20001AD3 (0x4 bytes), align: 2
+  Segment part 2.             Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM2                    20001AD0        LcdShow_Init (main)
+                                                   TIM2_IRQHandler (stm32f10x_it)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AD4 - 20001AD7 (0x4 bytes), align: 2
+  Segment part 3.             Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CAN                     20001AD4 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AD8 - 20001ADB (0x4 bytes), align: 2
+  Segment part 4.             Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           AFIO                    20001AD8        Segment part 22 (stm32f10x_gpio)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001ADC - 20001ADF (0x4 bytes), align: 2
+  Segment part 5.             Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIOA                   20001ADC 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AE0 - 20001AE3 (0x4 bytes), align: 2
+  Segment part 6.             Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIOB                   20001AE0 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AE4 - 20001AE7 (0x4 bytes), align: 2
+  Segment part 7.             Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIOC                   20001AE4        GPIO_Configuration (main)
+                                                   TIM2_IRQHandler (stm32f10x_it)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AE8 - 20001AEB (0x4 bytes), align: 2
+  Segment part 8.             Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIOD                   20001AE8        GPIO_Configuration (main)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AEC - 20001AEF (0x4 bytes), align: 2
+  Segment part 9.             Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           GPIOE                   20001AEC        GPIO_Configuration (main)
+                                                   TIM2_IRQHandler (stm32f10x_it)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AF0 - 20001AF3 (0x4 bytes), align: 2
+  Segment part 10.            Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           FLASH                   20001AF0        Segment part 7 (stm32f10x_flash)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AF4 - 20001AF7 (0x4 bytes), align: 2
+  Segment part 11.            Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           OB                      20001AF4 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AF8 - 20001AFB (0x4 bytes), align: 2
+  Segment part 12.            Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC                     20001AF8        Segment part 14 (stm32f10x_rcc)
+                                                   Segment part 27 (stm32f10x_rcc)
+                                                   Segment part 41 (stm32f10x_rcc)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001AFC - 20001AFF (0x4 bytes), align: 2
+  Segment part 13.            Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SysTick                 20001AFC        Segment part 10 (stm32f10x_systick)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001B00 - 20001B03 (0x4 bytes), align: 2
+  Segment part 14.            Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           NVIC                    20001B00        Segment part 8 (stm32f10x_nvic)
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: 20001B04 - 20001B07 (0x4 bytes), align: 2
+  Segment part 15.            Intra module refs:   debug
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SCB                     20001B04        Segment part 18 (stm32f10x_nvic)
+                                                   Segment part 32 (stm32f10x_nvic)
+                                                   Segment part 52 (stm32f10x_nvic)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000B50 - 20000C13 (0xc4 bytes), align: 2
+  Segment part 16.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           debug                   20000B51        main (main)
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_nvic.r79
+  PROGRAM MODULE, NAME : stm32f10x_nvic
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20000C14 - 20000C49 (0x36 bytes), align: 2
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           NVIC_PriorityGroupConfig
+                                   20000C15        NVIC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000C4C - 20000C4F (0x4 bytes), align: 2
+  Segment part 6.             Intra module refs:   NVIC_PriorityGroupConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000C50 - 20000E49 (0x1fa bytes), align: 2
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           NVIC_Init               20000C51        NVIC_Configuration (main)
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000E4C - 20000E4F (0x4 bytes), align: 2
+  Segment part 8.             Intra module refs:   NVIC_Init
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000E50 - 20000E53 (0x4 bytes), align: 2
+  Segment part 15.            Intra module refs:   NVIC_Init
+                                                   NVIC_PriorityGroupConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000E54 - 20000E57 (0x4 bytes), align: 2
+  Segment part 18.            Intra module refs:   NVIC_Init
+                                                   NVIC_PriorityGroupConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000E58 - 20000E9B (0x44 bytes), align: 2
+  Segment part 27.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           NVIC_SetVectorTable     20000E59        NVIC_Configuration (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000E9C - 20000E9F (0x4 bytes), align: 2
+  Segment part 32.            Intra module refs:   NVIC_SetVectorTable
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000EA0 - 20000F7F (0xe0 bytes), align: 2
+  Segment part 33.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           NVIC_SystemHandlerPriorityConfig
+                                   20000EA1        NVIC_Configuration (main)
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000F80 - 20000F83 (0x4 bytes), align: 2
+  Segment part 37.            Intra module refs:   NVIC_SetVectorTable
+                                                   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000F84 - 20000F87 (0x4 bytes), align: 2
+  Segment part 39.            Intra module refs:   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000F88 - 20000F8B (0x4 bytes), align: 2
+  Segment part 40.            Intra module refs:   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000F8C - 20000F8F (0x4 bytes), align: 2
+  Segment part 41.            Intra module refs:   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000F90 - 20000F93 (0x4 bytes), align: 2
+  Segment part 42.            Intra module refs:   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000F94 - 20000F97 (0x4 bytes), align: 2
+  Segment part 43.            Intra module refs:   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000F98 - 20000F9B (0x4 bytes), align: 2
+  Segment part 44.            Intra module refs:   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000F9C - 20000F9F (0x4 bytes), align: 2
+  Segment part 47.            Intra module refs:   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000FA0 - 20000FA3 (0x4 bytes), align: 2
+  Segment part 52.            Intra module refs:   NVIC_SystemHandlerPriorityConfig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 200019A8 - 200019E7 (0x40 bytes), align: 2
+  Segment part 2.             Intra module refs:   Segment part 15
+                                                   Segment part 37
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_rcc.r79
+  PROGRAM MODULE, NAME : stm32f10x_rcc
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_C
+  Relative segment, address: 200019E8 - 20001A27 (0x40 bytes), align: 2
+  Segment part 2.             Intra module refs:   Segment part 18
+                                                   Segment part 30
+                                                   Segment part 45
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20000FA4 - 20001019 (0x76 bytes), align: 2
+  Segment part 6.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_HSEConfig           20000FA5        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000101C - 2000104F (0x34 bytes), align: 2
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_WaitForHSEStartUp   2000101D        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001050 - 200010F3 (0xa4 bytes), align: 2
+  Segment part 10.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_PLLConfig           20001051        RCC_Configuration (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200010F4 - 20001117 (0x24 bytes), align: 2
+  Segment part 11.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_PLLCmd              200010F5        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001118 - 20001149 (0x32 bytes), align: 2
+  Segment part 12.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_SYSCLKConfig        20001119        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000114C - 20001157 (0xc bytes), align: 2
+  Segment part 13.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_GetSYSCLKSource     2000114D        RCC_Configuration (main)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001158 - 2000115B (0x4 bytes), align: 2
+  Segment part 14.            Intra module refs:   RCC_GetSYSCLKSource
+                                                   RCC_HSEConfig
+                                                   RCC_PLLConfig
+                                                   RCC_SYSCLKConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000115C - 200011A7 (0x4c bytes), align: 2
+  Segment part 15.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_HCLKConfig          2000115D        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200011A8 - 200011ED (0x46 bytes), align: 2
+  Segment part 16.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_PCLK1Config         200011A9        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200011F0 - 20001237 (0x48 bytes), align: 2
+  Segment part 17.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_PCLK2Config         200011F1        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001238 - 2000123B (0x4 bytes), align: 2
+  Segment part 18.            Intra module refs:   RCC_HCLKConfig
+                                                   RCC_HSEConfig
+                                                   RCC_PCLK1Config
+                                                   RCC_PCLK2Config
+                                                   RCC_PLLCmd
+                                                   RCC_PLLConfig
+                                                   RCC_SYSCLKConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000123C - 2000127B (0x40 bytes), align: 2
+  Segment part 21.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_ADCCLKConfig        2000123D        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000127C - 2000127F (0x4 bytes), align: 2
+  Segment part 27.            Intra module refs:   RCC_ADCCLKConfig
+                                                   RCC_HCLKConfig
+                                                   RCC_PCLK1Config
+                                                   RCC_PCLK2Config
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001280 - 200012D3 (0x54 bytes), align: 2
+  Segment part 29.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_APB2PeriphClockCmd
+                                   20001281        RCC_Configuration (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200012D4 - 200012D7 (0x4 bytes), align: 2
+  Segment part 30.            Intra module refs:   RCC_ADCCLKConfig
+                                                   RCC_APB2PeriphClockCmd
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200012D8 - 2000132B (0x54 bytes), align: 2
+  Segment part 31.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_APB1PeriphClockCmd
+                                   200012D9        RCC_Configuration (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000132C - 2000132F (0x4 bytes), align: 2
+  Segment part 33.            Intra module refs:   RCC_APB2PeriphClockCmd
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001330 - 20001333 (0x4 bytes), align: 2
+  Segment part 35.            Intra module refs:   RCC_APB1PeriphClockCmd
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001334 - 200013B7 (0x84 bytes), align: 2
+  Segment part 39.            Intra module refs:   RCC_WaitForHSEStartUp
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           RCC_GetFlagStatus       20001335        RCC_Configuration (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200013B8 - 200013BB (0x4 bytes), align: 2
+  Segment part 41.            Intra module refs:   RCC_APB1PeriphClockCmd
+                                                   RCC_APB2PeriphClockCmd
+                                                   RCC_GetFlagStatus
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200013BC - 200013BF (0x4 bytes), align: 2
+  Segment part 45.            Intra module refs:   RCC_APB1PeriphClockCmd
+                                                   RCC_GetFlagStatus
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_systick.r79
+  PROGRAM MODULE, NAME : stm32f10x_systick
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 200013C0 - 200013FF (0x40 bytes), align: 2
+  Segment part 3.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SysTick_CLKSourceConfig
+                                   200013C1        SysTick_Config (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001400 - 2000141D (0x1e bytes), align: 2
+  Segment part 4.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SysTick_SetReload       20001401        SysTick_Config (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001420 - 20001471 (0x52 bytes), align: 2
+  Segment part 5.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SysTick_CounterCmd      20001421        SysTick_Config (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001474 - 200014AF (0x3c bytes), align: 2
+  Segment part 6.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SysTick_ITConfig        20001475        SysTick_Config (main)
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200014B0 - 200014B3 (0x4 bytes), align: 2
+  Segment part 9.             Intra module refs:   SysTick_CLKSourceConfig
+                                                   SysTick_CounterCmd
+                                                   SysTick_ITConfig
+                                                   SysTick_SetReload
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200014B4 - 200014B7 (0x4 bytes), align: 2
+  Segment part 10.            Intra module refs:   SysTick_CLKSourceConfig
+                                                   SysTick_CounterCmd
+                                                   SysTick_ITConfig
+                                                   SysTick_SetReload
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 20001A28 - 20001A6B (0x44 bytes), align: 2
+  Segment part 2.             Intra module refs:   Segment part 9
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_tim.r79
+  PROGRAM MODULE, NAME : stm32f10x_tim
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_C
+  Relative segment, address: 20001A6C - 20001AAB (0x40 bytes), align: 2
+  Segment part 2.             Intra module refs:   Segment part 102
+                                                   Segment part 13
+                                                   Segment part 26
+                                                   Segment part 48
+                                                   Segment part 90
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 20001AAC - 20001AB3 (0x8 bytes), align: 2
+  Segment part 3.             Intra module refs:   TIM_OCInit
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           Tab_OCModeMask          20001AAC 
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: 20001AB4 - 20001ABB (0x8 bytes), align: 2
+  Segment part 4.             Intra module refs:   TIM_OCInit
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           Tab_PolarityMask        20001AB4 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200014B8 - 20001523 (0x6c bytes), align: 2
+  Segment part 6.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_TimeBaseInit        200014B9        LcdShow_Init (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001524 - 2000168F (0x16c bytes), align: 2
+  Segment part 7.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_OCInit              20001525        LcdShow_Init (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001690 - 20001693 (0x4 bytes), align: 2
+  Segment part 8.             Intra module refs:   TIM_OCInit
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001694 - 20001697 (0x4 bytes), align: 2
+  Segment part 9.             Intra module refs:   TIM_OCInit
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001698 - 2000169B (0x4 bytes), align: 2
+  Segment part 10.            Intra module refs:   TIM_OCInit
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000169C - 2000169F (0x4 bytes), align: 2
+  Segment part 11.            Intra module refs:   TIM_OCInit
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200016A0 - 200016A3 (0x4 bytes), align: 2
+  Segment part 13.            Intra module refs:   TIM_OCInit
+                                                   TIM_TimeBaseInit
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200016A4 - 200016D7 (0x34 bytes), align: 2
+  Segment part 17.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_Cmd                 200016A5        LcdShow_Init (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200016D8 - 2000171B (0x44 bytes), align: 2
+  Segment part 18.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_ITConfig            200016D9        LcdShow_Init (main)
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000171C - 2000171F (0x4 bytes), align: 2
+  Segment part 19.            Intra module refs:   TIM_ITConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001720 - 20001723 (0x4 bytes), align: 2
+  Segment part 26.            Intra module refs:   TIM_Cmd
+                                                   TIM_ITConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001724 - 2000175B (0x38 bytes), align: 2
+  Segment part 41.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_ARRPreloadConfig    20001725        LcdShow_Init (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000175C - 20001787 (0x2c bytes), align: 2
+  Segment part 43.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_OC1PreloadConfig    2000175D        LcdShow_Init (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001788 - 2000178B (0x4 bytes), align: 2
+  Segment part 46.            Intra module refs:   TIM_OC1PreloadConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 2000178C - 2000178F (0x4 bytes), align: 2
+  Segment part 48.            Intra module refs:   TIM_ARRPreloadConfig
+                                                   TIM_OC1PreloadConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001790 - 200017C7 (0x38 bytes), align: 2
+  Segment part 70.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_UpdateRequestConfig
+                                   20001791        LcdShow_Init (main)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200017C8 - 200017CB (0x4 bytes), align: 2
+  Segment part 90.            Intra module refs:   TIM_UpdateRequestConfig
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 200017CC - 2000181F (0x54 bytes), align: 2
+  Segment part 99.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_GetITStatus         200017CD        TIM2_IRQHandler (stm32f10x_it)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001820 - 20001843 (0x24 bytes), align: 2
+  Segment part 100.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           TIM_ClearITPendingBit   20001821        TIM2_IRQHandler (stm32f10x_it)
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001844 - 20001847 (0x4 bytes), align: 2
+  Segment part 101.           Intra module refs:   TIM_ClearITPendingBit
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001848 - 2000184B (0x4 bytes), align: 2
+  Segment part 102.           Intra module refs:   TIM_ClearITPendingBit
+                                                   TIM_GetITStatus
+
+    *************************************************************************
+
+  FILE NAME : D:\DavidJiang\STM32\EK_STM32\Project\CAN Demo\firmware\EWARM\BOOT_RAM\Obj\stm32f10x_vector.r79
+  PROGRAM MODULE, NAME : stm32f10x_vector
+
+  SEGMENTS IN THE MODULE
+  ======================
+INTVEC
+  Relative segment, address: 20000000 - 200000EB (0xec bytes), align: 2
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __vector_table          20000000        __program_start (?CMAIN)
+    -------------------------------------------------------------------------
+CSTACK
+  Relative segment, address: 20001B0C, align: 2
+  Segment part 1.
+
+    *************************************************************************
+
+  FILE NAME : C:\Program Files\IAR Systems\Embedded Workbench 4.0\ARM\LIB\dl7mptnnl8f.r79
+  LIBRARY MODULE, NAME : ?low_level_init
+
+  SEGMENTS IN THE MODULE
+  ======================
+ICODE
+  Relative segment, address: 200000EC - 200000EF (0x4 bytes), align: 2
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __low_level_init        200000ED        __program_start (?CMAIN)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?segment_init
+
+  SEGMENTS IN THE MODULE
+  ======================
+ICODE
+  Relative segment, address: 200000F0 - 2000011F (0x30 bytes), align: 2
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __segment_init          200000F1        __program_start (?CMAIN)
+               stack 1 = 00000000 ( 00000008 )
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?__dbg_break
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 2000184C - 2000184D (0x2 bytes), align: 2
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __DebugBreak            2000184D        __exit (?__exit)
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?__exit
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20001850 - 20001861 (0x12 bytes), align: 2
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __exit                  20001851        Segment part 5 (?_EXIT)
+               stack 1 = 00000000 ( 0000000C )
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?exit
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20001864 - 20001867 (0x4 bytes), align: 2
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           exit                    20001865        _main (?CMAIN)
+               stack 1 = 00000000 ( 00000004 )
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?memcpy
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20001868 - 2000187D (0x16 bytes), align: 2
+  Segment part 3.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           memcpy                  20001869        __segment_init (?segment_init)
+               stack 1 = 00000000 ( 00000008 )
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?memset
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20001880 - 20001891 (0x12 bytes), align: 2
+  Segment part 3.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           memset                  20001881        __segment_init (?segment_init)
+               stack 1 = 00000000 ( 00000008 )
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?xfiles
+
+  SEGMENTS IN THE MODULE
+  ======================
+INITTAB
+  Relative segment, address: 200018AC - 200018B7 (0xc bytes), align: 2
+  Segment part 15. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?init?tab?DATA_I        200018AC 
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?CMAIN
+
+  SEGMENTS IN THE MODULE
+  ======================
+DIFUNCT
+  Relative segment, address: 20000150, align: 2
+  Segment part 0. ROOT.
+    -------------------------------------------------------------------------
+ICODE
+  Relative segment, address: 20000120 - 20000133 (0x14 bytes), align: 2
+  Segment part 1.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           __program_start         20000121        Absolute parts (?ABS_ENTRY_MOD)
+                                                   __vector_table (stm32f10x_vector)
+    -------------------------------------------------------------------------
+ICODE
+  Relative segment, address: 20000134 - 2000014F (0x1c bytes), align: 2
+  Segment part 3.             Intra module refs:   __program_start
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _main                   2000013D 
+
+    -------------------------------------------------------------------------
+  LIBRARY MODULE, NAME : ?_EXIT
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: 20001894, align: 2
+  Segment part 0.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           _exit                   20001895        _main (?CMAIN)
+                                                   exit (?exit)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: 20001894 - 2000189F (0xc bytes), align: 2
+  Segment part 5.             Intra module refs:   _exit
+
+
+
+
+                ****************************************
+                *                                      *
+                *      SEGMENTS IN ADDRESS ORDER       *
+                *                                      *
+                ****************************************
+
+
+SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
+=======              =====    =============   ===========     ====  ====  =====
+INTVEC                             20000000 - 200000EB          EC   rel    2
+ICODE                              200000EC - 2000014F          64   rel    2
+DIFUNCT                                 20000150                     rel    2
+CODE                               20000150 - 2000189F        1750   rel    2
+INITTAB                            200018A0 - 200018B7          18   rel    2
+DATA_ID                                 200018B8                     dse    0
+DATA_C                             200018B8 - 20001ABE         207   rel    2
+DATA_I                                  20001ABF                     dse    0
+DATA_Z                             20001AC0 - 20001B0B          4C   rel    2
+CSTACK                             20001B0C - 20001D0B         200   rel    2
+
+                ****************************************
+                *                                      *
+                *        END OF CROSS REFERENCE        *
+                *                                      *
+                ****************************************
+
+ 6 304 bytes of CODE  memory
+   588 bytes of DATA  memory
+   543 bytes of CONST memory
+
+Errors: none
+Warnings: none
+

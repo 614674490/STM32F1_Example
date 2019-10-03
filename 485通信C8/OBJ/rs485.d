@@ -1,0 +1,14 @@
+..\obj\rs485.o: ..\FWLIB\485\rs485.c
+..\obj\rs485.o: ..\FWLIB\485\rs485.h
+..\obj\rs485.o: ..\SYSTEM\sys\sys.h
+..\obj\rs485.o: ..\USER\stm32f10x.h
+..\obj\rs485.o: ..\CORE\core_cm3.h
+..\obj\rs485.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\rs485.o: ..\USER\system_stm32f10x.h
+..\obj\rs485.o: ..\USER\stm32f10x_conf.h
+..\obj\rs485.o: ..\STM3210X\inc\stm32f10x_gpio.h
+..\obj\rs485.o: ..\USER\stm32f10x.h
+..\obj\rs485.o: ..\STM3210X\inc\stm32f10x_rcc.h
+..\obj\rs485.o: ..\STM3210X\inc\stm32f10x_usart.h
+..\obj\rs485.o: ..\STM3210X\inc\misc.h
+..\obj\rs485.o: ..\SYSTEM\delay\delay.h

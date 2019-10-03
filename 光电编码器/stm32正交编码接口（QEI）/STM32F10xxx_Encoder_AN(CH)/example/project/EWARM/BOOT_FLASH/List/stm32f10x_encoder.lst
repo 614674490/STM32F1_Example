@@ -1,0 +1,439 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32               15/May/2008  12:06:30 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  thumb                                                #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\source\stm32f10x_encoder.c   #
+#    Command line    =  "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\source\stm32f10x_encoder.c"  #
+#                       -D VECT_TAB_FLASH -lcN "C:\David JIANG\ST            #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -lb  #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -o   #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\" -z3   #
+#                       --no_cse --no_unroll --no_inline --no_code_motion    #
+#                       --no_tbaa --no_clustering --no_scheduling --debug    #
+#                       --cpu_mode thumb --endian little --cpu cortex-M3     #
+#                       --stack_align 4 --require_prototypes --fpu None      #
+#                       --dlib_config "C:\Program Files\IAR                  #
+#                       Systems\Embedded Workbench                           #
+#                       4.0\arm\LIB\dl7mptnnl8f.h" -I "C:\David JIANG\ST     #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\" -I "C:\David         #
+#                       JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM                 #
+#                       Encoder\example\project\EWARM\..\include\" -I        #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\..\..\FWLib\inc\" -I   #
+#                       "C:\Program Files\IAR Systems\Embedded Workbench     #
+#                       4.0\arm\INC\"                                        #
+#    List file       =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\stm32f #
+#                       10x_encoder.lst                                      #
+#    Object file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\stm32f1 #
+#                       0x_encoder.r79                                       #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM Encoder\example\project\source\stm32f10x_encoder.c
+      1          /******************** (C) COPYRIGHT 2007 STMicroelectronics ********************
+      2          * File Name          : stm32f10x_encoder.c 
+      3          * Author             : IMS Systems Lab  
+      4          * Date First Issued  : 21/11/07
+      5          * Description        : This file contains the software implementation for the
+      6          *                      encoder unit
+      7          ********************************************************************************
+      8          * History:
+      9          * 21/11/07 v1.0
+     10          ********************************************************************************
+     11          * THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     12          * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+     13          * AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+     14          * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+     15          * CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+     16          * INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     17          *******************************************************************************/
+     18          /* Includes ------------------------------------------------------------------*/
+     19          #include "stm32f10x_lib.h"
+     20          #include "stm32f10x_encoder.h"
+     21          #include "lcd.h"
+     22          
+     23          /* Private typedef -----------------------------------------------------------*/
+     24          /* Private define ------------------------------------------------------------*/
+     25          #define ENCODER_TIMER   TIM3  // Encoder unit connected to TIM3
+     26          #define ENCODER_PPR           (u16)(400)   // number of pulses per revolution
+     27          #define SPEED_BUFFER_SIZE 8
+     28          
+     29          #define COUNTER_RESET   (u16)0
+     30          #define ICx_FILTER      (u8) 6 // 6<-> 670nsec
+     31          
+     32          #define TIMx_PRE_EMPTION_PRIORITY 1
+     33          #define TIMx_SUB_PRIORITY 0
+     34          
+     35          #define SPEED_SAMPLING_FREQ (u16)(2000/(SPEED_SAMPLING_TIME+1))
+     36          
+     37          /* Private functions ---------------------------------------------------------*/
+     38          s16 ENC_Calc_Rot_Speed(void);
+     39          
+     40          /* Private variables ---------------------------------------------------------*/
+     41          static s16 hPrevious_angle, hSpeed_Buffer[SPEED_BUFFER_SIZE], hRot_Speed;
+     42          static u8 bSpeed_Buffer_Index = 0;
+     43          static volatile u16 hEncoder_Timer_Overflow; 
+     44          static bool bIs_First_Measurement = TRUE;
+     45          
+     46          /*******************************************************************************
+     47          * Function Name  : ENC_Init
+     48          * Description    : General Purpose Timer x set-up for encoder speed/position 
+     49          *                  sensors
+     50          * Input          : None
+     51          * Output         : None
+     52          * Return         : None
+     53          *******************************************************************************/
+     54          void ENC_Init(void)
+     55          {
+     56            TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+     57            TIM_ICInitTypeDef TIM_ICInitStructure;
+     58            
+     59          /* Encoder unit connected to TIM3, 4X mode */    
+     60            GPIO_InitTypeDef GPIO_InitStructure;
+     61            NVIC_InitTypeDef NVIC_InitStructure;
+     62            
+     63            /* TIM3 clock source enable */
+     64            RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+     65            /* Enable GPIOA, clock */
+     66            RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+     67            
+     68            GPIO_StructInit(&GPIO_InitStructure);
+     69            /* Configure PA.06,07 as encoder input */
+     70            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
+     71            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+     72            GPIO_Init(GPIOA, &GPIO_InitStructure);
+     73            
+     74            /* Enable the TIM3 Update Interrupt */
+     75            NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQChannel;
+     76            NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = TIMx_PRE_EMPTION_PRIORITY;
+     77            NVIC_InitStructure.NVIC_IRQChannelSubPriority = TIMx_SUB_PRIORITY;
+     78            NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+     79            NVIC_Init(&NVIC_InitStructure);
+     80          
+     81            /* Timer configuration in Encoder mode */
+     82            TIM_DeInit(ENCODER_TIMER);
+     83            TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
+     84            
+     85            TIM_TimeBaseStructure.TIM_Prescaler = 0x0;  // No prescaling 
+     86            TIM_TimeBaseStructure.TIM_Period = (4*ENCODER_PPR)-1;  
+     87            TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+     88            TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;   
+     89            TIM_TimeBaseInit(ENCODER_TIMER, &TIM_TimeBaseStructure);
+     90           
+     91            TIM_EncoderInterfaceConfig(ENCODER_TIMER, TIM_EncoderMode_TI12, 
+     92                                       TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);
+     93            TIM_ICStructInit(&TIM_ICInitStructure);
+     94            TIM_ICInitStructure.TIM_ICFilter = ICx_FILTER;
+     95            TIM_ICInit(ENCODER_TIMER, &TIM_ICInitStructure);
+     96            
+     97           // Clear all pending interrupts
+     98            TIM_ClearFlag(ENCODER_TIMER, TIM_FLAG_Update);
+     99            TIM_ITConfig(ENCODER_TIMER, TIM_IT_Update, ENABLE);
+    100            //Reset counter
+    101            TIM2->CNT = COUNTER_RESET;
+    102            
+    103            ENC_Clear_Speed_Buffer();
+    104            
+    105            TIM_Cmd(ENCODER_TIMER, ENABLE);  
+    106          }
+    107          
+    108          /*******************************************************************************
+    109          * Function Name  : ENC_Get_Electrical_Angle
+    110          * Description    : Returns the absolute electrical Rotor angle 
+    111          * Input          : None
+    112          * Output         : None
+    113          * Return         : Rotor electrical angle: 0 -> 0 degrees, 
+    114          *                                          S16_MAX-> 180 degrees, 
+    115          *                                          S16_MIN-> -180 degrees                  
+    116          *******************************************************************************/
+    117          s16 ENC_Get_Electrical_Angle(void)
+    118          {
+    119            s32 temp;
+    120            
+    121            temp = (s32)(TIM_GetCounter(ENCODER_TIMER)) * (s32)(U32_MAX / (4*ENCODER_PPR)); 
+    122            return((s16)(temp/65536)); // s16 result
+    123          }
+    124          
+    125          /*******************************************************************************
+    126          * Function Name  : ENC_Clear_Speed_Buffer
+    127          * Description    : Clear speed buffer used for average speed calculation  
+    128          * Input          : None
+    129          * Output         : None
+    130          * Return         : None
+    131          *******************************************************************************/
+    132          void ENC_Clear_Speed_Buffer(void)
+    133          {   
+    134            u32 i;
+    135          
+    136            for (i=0;i<SPEED_BUFFER_SIZE;i++)
+    137            {
+    138              hSpeed_Buffer[i] = 0;
+    139            }
+    140            bIs_First_Measurement = TRUE;
+    141          }
+    142          
+    143          /*******************************************************************************
+    144          * Function Name  : ENC_Calc_Rot_Speed
+    145          * Description    : Compute return latest speed measurement 
+    146          * Input          : None
+    147          * Output         : s16
+    148          * Return         : Return the speed in 0.1 Hz resolution.                    
+    149          *******************************************************************************/
+    150          s16 ENC_Calc_Rot_Speed(void)
+    151          {   
+    152            s32 wDelta_angle;
+    153            u16 hEnc_Timer_Overflow_sample_one, hEnc_Timer_Overflow_sample_two;
+    154            u16 hCurrent_angle_sample_one, hCurrent_angle_sample_two;
+    155            signed long long temp;
+    156            s16 haux;
+    157            
+    158            if (!bIs_First_Measurement)
+    159            {
+    160              // 1st reading of overflow counter    
+    161              hEnc_Timer_Overflow_sample_one = hEncoder_Timer_Overflow; 
+    162              // 1st reading of encoder timer counter
+    163              hCurrent_angle_sample_one = ENCODER_TIMER->CNT;
+    164              // 2nd reading of overflow counter
+    165              hEnc_Timer_Overflow_sample_two = hEncoder_Timer_Overflow;  
+    166              // 2nd reading of encoder timer counter
+    167              hCurrent_angle_sample_two = ENCODER_TIMER->CNT;      
+    168          
+    169              // Reset hEncoder_Timer_Overflow and read the counter value for the next
+    170              // measurement
+    171              hEncoder_Timer_Overflow = 0;
+    172              haux = ENCODER_TIMER->CNT;   
+    173              
+    174              if (hEncoder_Timer_Overflow != 0) 
+    175              {
+    176                haux = ENCODER_TIMER->CNT; 
+    177                hEncoder_Timer_Overflow = 0;            
+    178              }
+    179               
+    180              if (hEnc_Timer_Overflow_sample_one != hEnc_Timer_Overflow_sample_two)
+    181              { //Compare sample 1 & 2 and check if an overflow has been generated right 
+    182                //after the reading of encoder timer. If yes, copy sample 2 result in 
+    183                //sample 1 for next process 
+    184                hCurrent_angle_sample_one = hCurrent_angle_sample_two;
+    185                hEnc_Timer_Overflow_sample_one = hEnc_Timer_Overflow_sample_two;
+    186              }
+    187              
+    188              if ( (ENCODER_TIMER->CR1 & TIM_CounterMode_Down) == TIM_CounterMode_Down)  
+    189              {// encoder timer down-counting
+    190                wDelta_angle = (s32)(hCurrent_angle_sample_one - hPrevious_angle - 
+    191                              (hEnc_Timer_Overflow_sample_one) * (4*ENCODER_PPR));
+    192              }
+    193              else  
+    194              {//encoder timer up-counting
+    195                wDelta_angle = (s32)(hCurrent_angle_sample_one - hPrevious_angle + 
+    196                              (hEnc_Timer_Overflow_sample_one) * (4*ENCODER_PPR));
+    197              }
+    198              
+    199              // speed computation as delta angle * 1/(speed sempling time)
+    200              temp = (signed long long)(wDelta_angle * SPEED_SAMPLING_FREQ);
+    201              temp *= 10;  // 0.1 Hz resolution
+    202              temp /= (4*ENCODER_PPR);
+    203                  
+    204            } //is first measurement, discard it
+    205            else
+    206            {
+    207              bIs_First_Measurement = FALSE;
+    208              temp = 0;
+    209              hEncoder_Timer_Overflow = 0;
+    210              haux = ENCODER_TIMER->CNT;       
+    211              // Check if Encoder_Timer_Overflow is still zero. In case an overflow IT 
+    212              // occured it resets overflow counter and wPWM_Counter_Angular_Velocity
+    213              if (hEncoder_Timer_Overflow != 0) 
+    214              {
+    215                haux = ENCODER_TIMER->CNT; 
+    216                hEncoder_Timer_Overflow = 0;            
+    217              }
+    218            }
+    219            
+    220            hPrevious_angle = haux;  
+    221           
+    222            return((s16) temp);
+    223          }
+    224          
+    225          /*******************************************************************************
+    226          * Function Name  : ENC_Calc_Average_Speed
+    227          * Description    : Compute smoothed motor speed based on last SPEED_BUFFER_SIZE
+    228                             informations and store it variable  
+    229          * Input          : None
+    230          * Output         : s16
+    231          * Return         : Return rotor speed in 0.1 Hz resolution. This routine 
+    232                             will return the average mechanical speed of the motor.
+    233          *******************************************************************************/
+    234          void ENC_Calc_Average_Speed(void)
+    235          {   
+    236            s32 wtemp;
+    237            u32 i;
+    238            
+    239            wtemp = ENC_Calc_Rot_Speed();
+    240                  
+    241          /* Compute the average of the read speeds */  
+    242            hSpeed_Buffer[bSpeed_Buffer_Index] = (s16)wtemp;
+    243            bSpeed_Buffer_Index++;
+    244            
+    245            if (bSpeed_Buffer_Index == SPEED_BUFFER_SIZE) 
+    246            {
+    247              bSpeed_Buffer_Index = 0;
+    248            }
+    249          
+    250            wtemp=0;
+    251          
+    252            for (i=0;i<SPEED_BUFFER_SIZE;i++)
+    253            {
+    254              wtemp += hSpeed_Buffer[i];
+    255            }
+    256            wtemp /= SPEED_BUFFER_SIZE;
+    257            
+    258            hRot_Speed = ((s16)(wtemp));
+    259          }
+    260          
+    261          /*******************************************************************************
+    262          * Function Name  : LCD_Display
+    263          * Description    : This function handles the display of timer counter, theta and
+    264                              electronical frequency:
+    265                              theta --- resolution: 1 degree;
+    266                              electronical frequency --- resolution: 0.1Hz.
+    267          * Input          : None
+    268          * Output         : None
+    269          * Return         : None
+    270          *******************************************************************************/
+    271          void LCD_Display(DisplayType DisplayStatus)
+    272          {
+    273            u16 hValue;
+    274            s16 Theta;
+    275            s16 hSpeed;
+    276            char *pstr;
+    277            
+    278            switch (DisplayStatus)
+    279            {
+    280              case DISPLAY_TIMCNT: 
+    281                hValue = TIM_GetCounter(ENCODER_TIMER);
+    282                write_string(int2char(hValue));      
+    283              break;
+    284              
+    285              case DISPLAY_THETA:      
+    286                Theta = ENC_Get_Electrical_Angle()*360/U16_MAX;
+    287                if (Theta < 0) 
+    288                {
+    289                  hValue = (u16)(-Theta);
+    290                  pstr = int2char(hValue);
+    291                  *pstr = '-';
+    292                }
+    293                else
+    294                {
+    295                  hValue = (u16)Theta;
+    296                  pstr = int2char(hValue);
+    297                  if (hValue != 0) *pstr = '+';  
+    298                }
+    299                write_string(pstr);
+    300              break;
+    301              
+    302              default:
+    303                hSpeed = hRot_Speed;
+    304                if (hSpeed < 0) 
+    305                {
+    306                  hValue = (u16)(-hSpeed);
+    307                  pstr = int2char(hValue);
+    308                  *pstr = '-';
+    309                }
+    310                else
+    311                {
+    312                  hValue = (u16)hSpeed;
+    313                  pstr = int2char(hValue);
+    314                  if (hValue != 0) *pstr = '+';  
+    315                }
+    316                write_string(pstr);
+    317              break;
+    318            }
+    319          }
+    320          
+    321          /*******************************************************************************
+    322          * Function Name  : TIM2_IRQHandler
+    323          * Description    : This function handles TIMx Update interrupt request.
+    324                             Encoder unit connected to TIM2
+    325          * Input          : None
+    326          * Output         : None
+    327          * Return         : None
+    328          *******************************************************************************/
+    329          void TIM3_IRQHandler(void)
+    330          {  
+    331            /* Clear the interrupt pending flag */
+    332            TIM_ClearFlag(ENCODER_TIMER, TIM_FLAG_Update);
+    333            
+    334            if (hEncoder_Timer_Overflow != U16_MAX)  
+    335            {
+    336             hEncoder_Timer_Overflow++;
+    337            }
+    338          }
+    339          
+    340          /******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+     Function                 CSTACK
+     --------                 ------
+     ENC_Calc_Average_Speed       4
+     ENC_Calc_Rot_Speed          16
+     ENC_Clear_Speed_Buffer       0
+     ENC_Get_Electrical_Angle     4
+     ENC_Init                    32
+     LCD_Display                  8
+     TIM3_IRQHandler              4
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     hPrevious_angle                   2
+     hSpeed_Buffer                    16
+     hRot_Speed                        2
+     bSpeed_Buffer_Index               1
+     hEncoder_Timer_Overflow           2
+     bIs_First_Measurement             1
+     ENC_Init                        224
+     ENC_Get_Electrical_Angle         32
+     ENC_Clear_Speed_Buffer           28
+     ENC_Calc_Rot_Speed              220
+     ENC_Calc_Average_Speed           80
+     LCD_Display                     172
+     TIM3_IRQHandler                  34
+     ??DataTable21                     4
+     ??DataTable28                     4
+     ??DataTable32                     4
+     ??DataTable33                     4
+     ??DataTable35                     4
+     ??DataTable37                     4
+     ?<Initializer for bIs_First_Measurement>
+                                       1
+      Others                         200
+
+ 
+ 990 bytes in segment CODE
+   1 byte  in segment DATA_I
+   1 byte  in segment DATA_ID
+  23 bytes in segment DATA_Z
+  24 bytes in segment INITTAB
+ 
+ 814 bytes of CODE  memory (+ 200 bytes shared)
+   1 byte  of CONST memory
+  24 bytes of DATA  memory
+
+Errors: none
+Warnings: none

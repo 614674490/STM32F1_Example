@@ -1,0 +1,1006 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32               15/May/2008  12:06:30 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  thumb                                                #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\FWLib\src\stm32f10x_can.c            #
+#    Command line    =  "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\FWLib\src\stm32f10x_can.c" -D        #
+#                       VECT_TAB_FLASH -lcN "C:\David JIANG\ST               #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -lb  #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -o   #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\" -z3   #
+#                       --no_cse --no_unroll --no_inline --no_code_motion    #
+#                       --no_tbaa --no_clustering --no_scheduling --debug    #
+#                       --cpu_mode thumb --endian little --cpu cortex-M3     #
+#                       --stack_align 4 --require_prototypes --fpu None      #
+#                       --dlib_config "C:\Program Files\IAR                  #
+#                       Systems\Embedded Workbench                           #
+#                       4.0\arm\LIB\dl7mptnnl8f.h" -I "C:\David JIANG\ST     #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\" -I "C:\David         #
+#                       JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM                 #
+#                       Encoder\example\project\EWARM\..\include\" -I        #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\..\..\FWLib\inc\" -I   #
+#                       "C:\Program Files\IAR Systems\Embedded Workbench     #
+#                       4.0\arm\INC\"                                        #
+#    List file       =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\stm32f #
+#                       10x_can.lst                                          #
+#    Object file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\stm32f1 #
+#                       0x_can.r79                                           #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM Encoder\example\FWLib\src\stm32f10x_can.c
+      1          /******************** (C) COPYRIGHT 2007 STMicroelectronics ********************
+      2          * File Name          : stm32f10x_can.c
+      3          * Author             : MCD Application Team
+      4          * Date First Issued  : 09/29/2006
+      5          * Description        : This file provides all the CAN firmware functions.
+      6          ********************************************************************************
+      7          * History:
+      8          * 05/21/2007: V0.3
+      9          * 04/02/2007: V0.2
+     10          * 02/05/2007: V0.1
+     11          * 09/29/2006: V0.01
+     12          ********************************************************************************
+     13          * THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     14          * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+     15          * AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+     16          * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+     17          * CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+     18          * INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     19          *******************************************************************************/
+     20          
+     21          /* Includes ------------------------------------------------------------------*/
+     22          #include "stm32f10x_can.h"
+     23          #include "stm32f10x_rcc.h"
+     24          
+     25          /* Private typedef -----------------------------------------------------------*/
+     26          
+     27          /* Private define ------------------------------------------------------------*/
+     28          /* CAN Master Control Register bits */
+     29          #define CAN_MCR_INRQ     ((u32)0x00000001) /* Initialization request */
+     30          #define CAN_MCR_SLEEP    ((u32)0x00000002) /* Sleep mode request */
+     31          #define CAN_MCR_TXFP     ((u32)0x00000004) /* Transmit FIFO priority */
+     32          #define CAN_MCR_RFLM     ((u32)0x00000008) /* Receive FIFO locked mode */
+     33          #define CAN_MCR_NART     ((u32)0x00000010) /* No automatic retransmission */
+     34          #define CAN_MCR_AWUM     ((u32)0x00000020) /* Automatic wake up mode */
+     35          #define CAN_MCR_ABOM     ((u32)0x00000040) /* Automatic bus-off management */
+     36          #define CAN_MCR_TTCM     ((u32)0x00000080) /* time triggered communication */
+     37          
+     38          /* CAN Master Status Register bits */
+     39          #define CAN_MSR_INAK     ((u32)0x00000001)    /* Initialization acknowledge */
+     40          #define CAN_MSR_WKUI     ((u32)0x00000008)    /* Wake-up interrupt */
+     41          #define CAN_MSR_SLAKI    ((u32)0x00000010)    /* Sleep acknowledge interrupt */
+     42          
+     43          /* CAN Transmit Status Register bits */
+     44          #define CAN_TSR_RQCP0    ((u32)0x00000001)    /* Request completed mailbox0 */
+     45          #define CAN_TSR_TXOK0    ((u32)0x00000002)    /* Transmission OK of mailbox0 */
+     46          #define CAN_TSR_ABRQ0    ((u32)0x00000080)    /* Abort request for mailbox0 */
+     47          #define CAN_TSR_RQCP1    ((u32)0x00000100)    /* Request completed mailbox1 */
+     48          #define CAN_TSR_TXOK1    ((u32)0x00000200)    /* Transmission OK of mailbox1 */
+     49          #define CAN_TSR_ABRQ1    ((u32)0x00008000)    /* Abort request for mailbox1 */
+     50          #define CAN_TSR_RQCP2    ((u32)0x00010000)    /* Request completed mailbox2 */
+     51          #define CAN_TSR_TXOK2    ((u32)0x00020000)    /* Transmission OK of mailbox2 */
+     52          #define CAN_TSR_ABRQ2    ((u32)0x00800000)    /* Abort request for mailbox2 */
+     53          #define CAN_TSR_TME0     ((u32)0x04000000)    /* Transmit mailbox 0 empty */
+     54          #define CAN_TSR_TME1     ((u32)0x08000000)    /* Transmit mailbox 1 empty */
+     55          #define CAN_TSR_TME2     ((u32)0x10000000)    /* Transmit mailbox 2 empty */
+     56          
+     57          /* CAN Receive FIFO 0 Register bits */
+     58          #define CAN_RF0R_FULL0   ((u32)0x00000008)    /* FIFO 0 full */
+     59          #define CAN_RF0R_FOVR0   ((u32)0x00000010)    /* FIFO 0 overrun */
+     60          #define CAN_RF0R_RFOM0   ((u32)0x00000020)    /* Release FIFO 0 output mailbox */
+     61          
+     62          /* CAN Receive FIFO 1 Register bits */
+     63          #define CAN_RF1R_FULL1   ((u32)0x00000008)    /* FIFO 1 full */
+     64          #define CAN_RF1R_FOVR1   ((u32)0x00000010)    /* FIFO 1 overrun */
+     65          #define CAN_RF1R_RFOM1   ((u32)0x00000020)    /* Release FIFO 1 output mailbox */
+     66          
+     67          /* CAN Error Status Register bits */
+     68          #define CAN_ESR_EWGF     ((u32)0x00000001)    /* Error warning flag */
+     69          #define CAN_ESR_EPVF     ((u32)0x00000002)    /* Error passive flag */
+     70          #define CAN_ESR_BOFF     ((u32)0x00000004)    /* Bus-off flag */
+     71          
+     72          /* CAN Mailbox Transmit Request */
+     73          #define CAN_TMIDxR_TXRQ    ((u32)0x00000001) /* Transmit mailbox request */
+     74          
+     75          /* CAN Filter Master Register bits */
+     76          #define CAN_FMR_FINIT ((u32)0x00000001) /* Filter init mode */
+     77          
+     78          
+     79          /* Private macro -------------------------------------------------------------*/
+     80          /* Private variables ---------------------------------------------------------*/
+     81          /* Private function prototypes -----------------------------------------------*/
+     82          static ITStatus CheckITStatus(u32 CAN_Reg, u32 It_Bit);
+     83          
+     84          /* Private functions ---------------------------------------------------------*/
+     85          /*******************************************************************************
+     86          * Function Name  : CAN_DeInit
+     87          * Description    : Deinitializes the CAN peripheral registers to their default
+     88          *                  reset values.
+     89          * Input          : None.
+     90          * Output         : None.
+     91          * Return         : None.
+     92          *******************************************************************************/
+     93          void CAN_DeInit(void)
+     94          {
+     95            /* Enable CAN reset state */
+     96            RCC_APB1PeriphResetCmd(RCC_APB1Periph_CAN, ENABLE);
+     97            /* Release CAN from reset state */
+     98            RCC_APB1PeriphResetCmd(RCC_APB1Periph_CAN, DISABLE);
+     99          }
+    100          
+    101          /*******************************************************************************
+    102          * Function Name  : CAN_Init
+    103          * Description    : Initializes the CAN peripheral according to the specified
+    104          *                  parameters in the CAN_InitStruct.
+    105          * Input          : CAN_InitStruct: pointer to a CAN_InitTypeDef structure that
+    106                             contains the configuration information for the CAN peripheral.
+    107          * Output         : None.
+    108          * Return         : Constant indicates initialization succeed which will be
+    109          *                  CANINITFAILED or CANINITOK.
+    110          *******************************************************************************/
+    111          u8 CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
+    112          {
+    113            u8 InitStatus = 0;
+    114          
+    115            /* Check the parameters */
+    116            assert(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_TTCM));
+    117            assert(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_ABOM));
+    118            assert(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_AWUM));
+    119            assert(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_NART));
+    120            assert(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_RFLM));
+    121            assert(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_TXFP));
+    122            assert(IS_CAN_MODE(CAN_InitStruct->CAN_Mode));
+    123            assert(IS_CAN_SJW(CAN_InitStruct->CAN_SJW));
+    124            assert(IS_CAN_BS1(CAN_InitStruct->CAN_BS1));
+    125            assert(IS_CAN_BS2(CAN_InitStruct->CAN_BS2));
+    126            assert(IS_CAN_PRESCALER(CAN_InitStruct->CAN_Prescaler));
+    127          
+    128            /* Request initialisation */
+    129            CAN->MCR = CAN_MCR_INRQ;
+    130          
+    131            /* ...and check acknowledged */
+    132            if ((CAN->MSR & CAN_MSR_INAK) == 0)
+    133            {
+    134              InitStatus = CANINITFAILED;
+    135            }
+    136            else
+    137            {
+    138              /* Set the time triggered communication mode */
+    139              if (CAN_InitStruct->CAN_TTCM == ENABLE)
+    140              {
+    141                CAN->MCR |= CAN_MCR_TTCM;
+    142              }
+    143              else
+    144              {
+    145                CAN->MCR &= ~CAN_MCR_TTCM;
+    146              }
+    147          
+    148              /* Set the automatic bus-off management */
+    149              if (CAN_InitStruct->CAN_ABOM == ENABLE)
+    150              {
+    151                CAN->MCR |= CAN_MCR_ABOM;
+    152              }
+    153              else
+    154              {
+    155                CAN->MCR &= ~CAN_MCR_ABOM;
+    156              }
+    157          
+    158              /* Set the automatic wake-up mode */
+    159              if (CAN_InitStruct->CAN_AWUM == ENABLE)
+    160              {
+    161                CAN->MCR |= CAN_MCR_AWUM;
+    162              }
+    163              else
+    164              {
+    165                CAN->MCR &= ~CAN_MCR_AWUM;
+    166              }
+    167          
+    168              /* Set the no automatic retransmission */
+    169              if (CAN_InitStruct->CAN_NART == ENABLE)
+    170              {
+    171                CAN->MCR |= CAN_MCR_NART;
+    172              }
+    173              else
+    174              {
+    175                CAN->MCR &= ~CAN_MCR_NART;
+    176              }
+    177          
+    178              /* Set the receive FIFO locked mode */
+    179              if (CAN_InitStruct->CAN_RFLM == ENABLE)
+    180              {
+    181                CAN->MCR |= CAN_MCR_RFLM;
+    182              }
+    183              else
+    184              {
+    185                CAN->MCR &= ~CAN_MCR_RFLM;
+    186              }
+    187          
+    188              /* Set the transmit FIFO priority */
+    189              if (CAN_InitStruct->CAN_TXFP == ENABLE)
+    190              {
+    191                CAN->MCR |= CAN_MCR_TXFP;
+    192              }
+    193              else
+    194              {
+    195                CAN->MCR &= ~CAN_MCR_TXFP;
+    196              }
+    197          
+    198              /* Set the bit timing register */
+    199              CAN->BTR = (u32)((u32)CAN_InitStruct->CAN_Mode << 30) | ((u32)CAN_InitStruct->CAN_SJW << 24) |
+    200                         ((u32)CAN_InitStruct->CAN_BS1 << 16) | ((u32)CAN_InitStruct->CAN_BS2 << 20) |
+    201                         ((u32)CAN_InitStruct->CAN_Prescaler - 1);
+    202          
+    203              InitStatus = CANINITOK;
+    204          
+    205              /* Request leave initialisation */
+    206              CAN->MCR &= ~CAN_MCR_INRQ;
+    207          
+    208              /* ...and check acknowledged */
+    209              if ((CAN->MSR & CAN_MSR_INAK) != CAN_MSR_INAK)
+    210              {
+    211                InitStatus = CANINITFAILED;
+    212              }
+    213            }
+    214          
+    215            /* At this step, return the status of initialization */
+    216            return InitStatus;
+    217          }
+    218          
+    219          /*******************************************************************************
+    220          * Function Name  : CAN_FilterInit
+    221          * Description    : Initializes the CAN peripheral according to the specified
+    222          *                  parameters in the CAN_FilterInitStruct.
+    223          * Input          : CAN_FilterInitStruct: pointer to a CAN_FilterInitTypeDef
+    224          *                  structure that contains the configuration information.
+    225          * Output         : None.
+    226          * Return         : None.
+    227          *******************************************************************************/
+    228          void CAN_FilterInit(CAN_FilterInitTypeDef* CAN_FilterInitStruct)
+    229          {
+    230            u16 FilterNumber_BitPos = 0;
+    231          
+    232            /* Check the parameters */
+    233            assert(IS_CAN_FILTER_NUMBER(CAN_FilterInitStruct->CAN_FilterNumber));
+    234            assert(IS_CAN_FILTER_MODE(CAN_FilterInitStruct->CAN_FilterMode));
+    235            assert(IS_CAN_FILTER_SCALE(CAN_FilterInitStruct->CAN_FilterScale));
+    236            assert(IS_CAN_FILTER_FIFO(CAN_FilterInitStruct->CAN_FilterFIFOAssignment));
+    237            assert(IS_FUNCTIONAL_STATE(CAN_FilterInitStruct->CAN_FilterActivation));
+    238          
+    239            FilterNumber_BitPos =
+    240            (u16)((u16)0x0001 << ((u16)CAN_FilterInitStruct->CAN_FilterNumber));
+    241          
+    242            /* Initialisation mode for the filter */
+    243            CAN->FMR |= CAN_FMR_FINIT;
+    244          
+    245            /* Filter Deactivation */
+    246            CAN->FA0R &= ~(u32)FilterNumber_BitPos;
+    247          
+    248            /* Filter Scale */
+    249            if (CAN_FilterInitStruct->CAN_FilterScale == CAN_FilterScale_16bit)
+    250            {
+    251              /* 16-bit scale for the filter */
+    252              CAN->FS0R &= ~(u32)FilterNumber_BitPos;
+    253          
+    254              /* First 16-bit identifier and First 16-bit mask */
+    255              /* Or First 16-bit identifier and Second 16-bit identifier */
+    256              CAN->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR0 =
+    257              ((u32)((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterMaskIdLow) << 16) |
+    258                  ((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterIdLow);
+    259          
+    260              /* Second 16-bit identifier and Second 16-bit mask */
+    261              /* Or Third 16-bit identifier and Fourth 16-bit identifier */
+    262              CAN->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR1 =
+    263              ((u32)((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterMaskIdHigh) << 16) |
+    264                  ((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterIdHigh);
+    265            }
+    266            if (CAN_FilterInitStruct->CAN_FilterScale == CAN_FilterScale_32bit)
+    267            {
+    268              /* 32-bit scale for the filter */
+    269              CAN->FS0R |= FilterNumber_BitPos;
+    270          
+    271              /* 32-bit identifier or First 32-bit identifier */
+    272              CAN->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR0 =
+    273              ((u32)((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterIdHigh) << 16) |
+    274                  ((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterIdLow);
+    275          
+    276              /* 32-bit mask or Second 32-bit identifier */
+    277              CAN->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR1 =
+    278              ((u32)((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterMaskIdHigh) << 16) |
+    279                  ((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterMaskIdLow);
+    280          
+    281            }
+    282          
+    283            /* Filter Mode */
+    284            if (CAN_FilterInitStruct->CAN_FilterMode == CAN_FilterMode_IdMask)
+    285            {
+    286              /*Id/Mask mode for the filter*/
+    287              CAN->FM0R &= ~(u32)FilterNumber_BitPos;
+    288            }
+    289            else /* CAN_FilterInitStruct->CAN_FilterMode == CAN_FilterMode_IdList */
+    290            {
+    291              /*Identifier list mode for the filter*/
+    292              CAN->FM0R |= (u32)FilterNumber_BitPos;
+    293            }
+    294          
+    295            /* Filter FIFO assignment */
+    296            if (CAN_FilterInitStruct->CAN_FilterFIFOAssignment == CAN_FilterFIFO0)
+    297            {
+    298              /* FIFO 0 assignation for the filter */
+    299              CAN->FFA0R &= ~(u32)FilterNumber_BitPos;
+    300            }
+    301            if (CAN_FilterInitStruct->CAN_FilterFIFOAssignment == CAN_FilterFIFO1)
+    302            {
+    303              /* FIFO 1 assignation for the filter */
+    304              CAN->FFA0R |= (u32)FilterNumber_BitPos;
+    305            }
+    306          
+    307            /* Filter activation */
+    308            if (CAN_FilterInitStruct->CAN_FilterActivation == ENABLE)
+    309            {
+    310              CAN->FA0R |= FilterNumber_BitPos;
+    311            }
+    312          
+    313            /* Leave the initialisation mode for the filter */
+    314            CAN->FMR &= ~CAN_FMR_FINIT;
+    315          }
+    316          
+    317          /*******************************************************************************
+    318          * Function Name  : CAN_StructInit
+    319          * Description    : Fills each CAN_InitStruct member with its default value.
+    320          * Input          : CAN_InitStruct: pointer to a CAN_InitTypeDef structure which
+    321          *                  will be initialized.
+    322          * Output         : None.
+    323          * Return         : None.
+    324          *******************************************************************************/
+    325          void CAN_StructInit(CAN_InitTypeDef* CAN_InitStruct)
+    326          {
+    327            /* Reset CAN init structure parameters values */
+    328          
+    329            /* Initialize the time triggered communication mode */
+    330            CAN_InitStruct->CAN_TTCM = DISABLE;
+    331          
+    332            /* Initialize the automatic bus-off management */
+    333            CAN_InitStruct->CAN_ABOM = DISABLE;
+    334          
+    335            /* Initialize the automatic wake-up mode */
+    336            CAN_InitStruct->CAN_AWUM = DISABLE;
+    337          
+    338            /* Initialize the no automatic retransmission */
+    339            CAN_InitStruct->CAN_NART = DISABLE;
+    340          
+    341            /* Initialize the receive FIFO locked mode */
+    342            CAN_InitStruct->CAN_RFLM = DISABLE;
+    343          
+    344            /* Initialize the transmit FIFO priority */
+    345            CAN_InitStruct->CAN_TXFP = DISABLE;
+    346          
+    347            /* Initialize the CAN_Mode member */
+    348            CAN_InitStruct->CAN_Mode = CAN_Mode_Normal;
+    349          
+    350            /* Initialize the CAN_SJW member */
+    351            CAN_InitStruct->CAN_SJW = CAN_SJW_0tq;
+    352          
+    353            /* Initialize the CAN_BS1 member */
+    354            CAN_InitStruct->CAN_BS1 = CAN_BS1_4tq;
+    355          
+    356            /* Initialize the CAN_BS2 member */
+    357            CAN_InitStruct->CAN_BS2 = CAN_BS2_3tq;
+    358          
+    359            /* Initialize the CAN_Prescaler member */
+    360            CAN_InitStruct->CAN_Prescaler = 1;
+    361          }
+    362          
+    363          /*******************************************************************************
+    364          * Function Name  : CAN_ITConfig
+    365          * Description    : Enables or disables the specified CAN interrupts.
+    366          * Input          : - CAN_IT: specifies the CAN interrupt sources to be enabled or
+    367          *                    disabled.
+    368          *                    This parameter can be: CAN_IT_TME, CAN_IT_FMP0, CAN_IT_FF0,
+    369          *                                           CAN_IT_FOV0, CAN_IT_FMP1, CAN_IT_FF1,
+    370          *                                           CAN_IT_FOV1, CAN_IT_EWG, CAN_IT_EPV,
+    371          *                                           CAN_IT_LEC, CAN_IT_ERR, CAN_IT_WKU or
+    372          *                                           CAN_IT_SLK.
+    373          *                  - NewState: new state of the CAN interrupts.
+    374          *                    This parameter can be: ENABLE or DISABLE.
+    375          * Output         : None.
+    376          * Return         : None.
+    377          *******************************************************************************/
+    378          void CAN_ITConfig(u32 CAN_IT, FunctionalState NewState)
+    379          {
+    380            /* Check the parameters */
+    381            assert(IS_CAN_ITConfig(CAN_IT));
+    382            assert(IS_FUNCTIONAL_STATE(NewState));
+    383          
+    384            if (NewState != DISABLE)
+    385            {
+    386              /* Enable the selected CAN interrupt */
+    387              CAN->IER |= CAN_IT;
+    388            }
+    389            else
+    390            {
+    391              /* Disable the selected CAN interrupt */
+    392              CAN->IER &= ~CAN_IT;
+    393            }
+    394          }
+    395          
+    396          /*******************************************************************************
+    397          * Function Name  : CAN_Transmit
+    398          * Description    : Initiates the transmission of a message.
+    399          * Input          : TxMessage: pointer to a structure which contains CAN Id, CAN
+    400          *                  DLC and CAN datas.
+    401          * Output         : None.
+    402          * Return         : The number of the mailbox that is used for transmission
+    403          *                  or CAN_NO_MB if there is no empty mailbox.
+    404          *******************************************************************************/
+    405          u8 CAN_Transmit(CanTxMsg* TxMessage)
+    406          {
+    407            u8 TransmitMailbox = 0;
+    408          
+    409            /* Check the parameters */
+    410            assert(IS_CAN_STDID(TxMessage->StdId));
+    411            assert(IS_CAN_EXTID(TxMessage->ExtId));
+    412            assert(IS_CAN_IDTYPE(TxMessage->IDE));
+    413            assert(IS_CAN_RTR(TxMessage->RTR));
+    414            assert(IS_CAN_DLC(TxMessage->DLC));
+    415          
+    416            /* Select one empty transmit mailbox */
+    417            if ((CAN->TSR&CAN_TSR_TME0) == CAN_TSR_TME0)
+    418            {
+    419              TransmitMailbox = 0;
+    420            }
+    421            else if ((CAN->TSR&CAN_TSR_TME1) == CAN_TSR_TME1)
+    422            {
+    423              TransmitMailbox = 1;
+    424            }
+    425            else if ((CAN->TSR&CAN_TSR_TME2) == CAN_TSR_TME2)
+    426            {
+    427              TransmitMailbox = 2;
+    428            }
+    429            else
+    430            {
+    431              TransmitMailbox = CAN_NO_MB;
+    432            }
+    433          
+    434            if (TransmitMailbox != CAN_NO_MB)
+    435            {
+    436              /* Set up the Id */
+    437              TxMessage->StdId &= (u32)0x000007FF;
+    438              TxMessage->StdId = TxMessage->StdId << 21;
+    439              TxMessage->ExtId &= (u32)0x0003FFFF;
+    440              TxMessage->ExtId <<= 3;
+    441          
+    442              CAN->sTxMailBox[TransmitMailbox].TIR &= CAN_TMIDxR_TXRQ;
+    443              CAN->sTxMailBox[TransmitMailbox].TIR |= (TxMessage->StdId | TxMessage->ExtId |
+    444                                                      TxMessage->IDE | TxMessage->RTR);
+    445          
+    446              /* Set up the DLC */
+    447              TxMessage->DLC &= (u8)0x0000000F;
+    448              CAN->sTxMailBox[TransmitMailbox].TDTR &= (u32)0xFFFFFFF0;
+    449              CAN->sTxMailBox[TransmitMailbox].TDTR |= TxMessage->DLC;
+    450          
+    451              /* Set up the data field */
+    452              CAN->sTxMailBox[TransmitMailbox].TDLR = (((u32)TxMessage->Data[3] << 24) |
+    453                                                       ((u32)TxMessage->Data[2] << 16) |
+    454                                                       ((u32)TxMessage->Data[1] << 8) |
+    455                                                       ((u32)TxMessage->Data[0]));
+    456              CAN->sTxMailBox[TransmitMailbox].TDHR = (((u32)TxMessage->Data[7] << 24) |
+    457                                                       ((u32)TxMessage->Data[6] << 16) |
+    458                                                       ((u32)TxMessage->Data[5] << 8) |
+    459                                                       ((u32)TxMessage->Data[4]));
+    460          
+    461              /* Request transmission */
+    462              CAN->sTxMailBox[TransmitMailbox].TIR |= CAN_TMIDxR_TXRQ;
+    463            }
+    464          
+    465            return TransmitMailbox;
+    466          }
+    467          
+    468          /*******************************************************************************
+    469          * Function Name  : CAN_TransmitStatus
+    470          * Description    : Checks the transmission of a message.
+    471          * Input          : TransmitMailbox: the number of the mailbox that is used for
+    472          *                  transmission.
+    473          * Output         : None.
+    474          * Return         : CANTXOK if the CAN driver transmits the message, CANTXFAILED
+    475          *                  in an other case.
+    476          *******************************************************************************/
+    477          u8 CAN_TransmitStatus(u8 TransmitMailbox)
+    478          {
+    479            /* RQCP, TXOK and TME bits */
+    480            u32 State = 0;
+    481          
+    482            /* Check the parameters */
+    483            assert(IS_CAN_TRANSMITMAILBOX(TransmitMailbox));
+    484          
+    485            switch (TransmitMailbox)
+    486            {
+    487              case (0): State |= ((CAN->TSR & CAN_TSR_RQCP0) << 2);
+    488                State |= ((CAN->TSR & CAN_TSR_TXOK0) >> 0);
+    489                State |= ((CAN->TSR & CAN_TSR_TME0) >> 26);
+    490                break;
+    491              case (1): State |= ((CAN->TSR & CAN_TSR_RQCP1) >> 6);
+    492                State |= ((CAN->TSR & CAN_TSR_TXOK1) >> 8);
+    493                State |= ((CAN->TSR & CAN_TSR_TME1) >> 27);
+    494                break;
+    495              case (2): State |= ((CAN->TSR & CAN_TSR_RQCP2) >> 14);
+    496                State |= ((CAN->TSR & CAN_TSR_TXOK2) >> 16);
+    497                State |= ((CAN->TSR & CAN_TSR_TME2) >> 28);
+    498                break;
+    499              default:
+    500                State = CANTXFAILED;
+    501                break;
+    502            }
+    503          
+    504            switch (State)
+    505            {
+    506                /* transmit pending  */
+    507              case (0x0): State = CANTXPENDING;
+    508                break;
+    509                /* transmit failed  */
+    510              case (0x5): State = CANTXFAILED;
+    511                break;
+    512                /* transmit succedeed  */
+    513              case (0x7): State = CANTXOK;
+    514                break;
+    515              default:
+    516                State = CANTXFAILED;
+    517                break;
+    518            }
+    519          
+    520            return State;
+    521          }
+    522          
+    523          /*******************************************************************************
+    524          * Function Name  : CAN_CancelTransmit
+    525          * Description    : Cancels a transmit request.
+    526          * Input          : Mailbox number.
+    527          * Output         : None.
+    528          * Return         : None.
+    529          *******************************************************************************/
+    530          void CAN_CancelTransmit(u8 Mailbox)
+    531          {
+    532            /* Check the parameters */
+    533            assert(IS_CAN_TRANSMITMAILBOX(Mailbox));
+    534          
+    535            /* abort transmission */
+    536            switch (Mailbox)
+    537            {
+    538              case (0): CAN->TSR |= CAN_TSR_ABRQ0;
+    539                break;
+    540              case (1): CAN->TSR |= CAN_TSR_ABRQ1;
+    541                break;
+    542              case (2): CAN->TSR |= CAN_TSR_ABRQ2;
+    543                break;
+    544              default:
+    545                break;
+    546            }
+    547          }
+    548          
+    549          /*******************************************************************************
+    550          * Function Name  : CAN_FIFORelease
+    551          * Description    : Releases a FIFO.
+    552          * Input          : FIFONumber: FIFO to release, CAN_FIFO0 or CAN_FIFO1.
+    553          * Output         : None.
+    554          * Return         : None.
+    555          *******************************************************************************/
+    556          void CAN_FIFORelease(u8 FIFONumber)
+    557          {
+    558            /* Check the parameters */
+    559            assert(IS_CAN_FIFO(FIFONumber));
+    560          
+    561            /* Release FIFO0 */
+    562            if (FIFONumber == CAN_FIFO0)
+    563            {
+    564              CAN->RF0R = CAN_RF0R_RFOM0;
+    565            }
+    566            /* Release FIFO1 */
+    567            else /* FIFONumber == CAN_FIFO1 */
+    568            {
+    569              CAN->RF1R = CAN_RF1R_RFOM1;
+    570            }
+    571          }
+    572          
+    573          /*******************************************************************************
+    574          * Function Name  : CAN_MessagePending
+    575          * Description    : Returns the number of pending messages.
+    576          * Input          : FIFONumber: Receive FIFO number, CAN_FIFO0 or CAN_FIFO1.
+    577          * Output         : None.
+    578          * Return         : NbMessage which is the number of pending message.
+    579          *******************************************************************************/
+    580          u8 CAN_MessagePending(u8 FIFONumber)
+    581          {
+    582            u8 MessagePending=0;
+    583          
+    584            /* Check the parameters */
+    585            assert(IS_CAN_FIFO(FIFONumber));
+    586          
+    587            if (FIFONumber == CAN_FIFO0)
+    588            {
+    589              MessagePending = (u8)(CAN->RF0R&(u32)0x03);
+    590            }
+    591            else if (FIFONumber == CAN_FIFO1)
+    592            {
+    593              MessagePending = (u8)(CAN->RF1R&(u32)0x03);
+    594            }
+    595            else
+    596            {
+    597              MessagePending = 0;
+    598            }
+    599            return MessagePending;
+    600          }
+    601          
+    602          /*******************************************************************************
+    603          * Function Name  : CAN_Receive
+    604          * Description    : Receives a message.
+    605          * Input          : FIFONumber: Receive FIFO number, CAN_FIFO0 or CAN_FIFO1.
+    606          * Output         : RxMessage: pointer to a structure which contains CAN Id,
+    607          *                  CAN DLC, CAN datas and FMI number.
+    608          * Return         : None.
+    609          *******************************************************************************/
+    610          void CAN_Receive(u8 FIFONumber, CanRxMsg* RxMessage)
+    611          {
+    612            /* Check the parameters */
+    613            assert(IS_CAN_FIFO(FIFONumber));
+    614          
+    615            /* Get the Id */
+    616            RxMessage->StdId = (u32)0x000007FF & (CAN->sFIFOMailBox[FIFONumber].RIR >> 21);
+    617            RxMessage->ExtId = (u32)0x0003FFFF & (CAN->sFIFOMailBox[FIFONumber].RIR >> 3);
+    618          
+    619            RxMessage->IDE = (u32)0x00000004 & CAN->sFIFOMailBox[FIFONumber].RIR;
+    620            RxMessage->RTR = (u32)0x00000002 & CAN->sFIFOMailBox[FIFONumber].RIR;
+    621          
+    622            /* Get the DLC */
+    623            RxMessage->DLC = (u32)0x0000000F & CAN->sFIFOMailBox[FIFONumber].RDTR;
+    624          
+    625            /* Get the FMI */
+    626            RxMessage->FMI = (u32)0x000000FF & (CAN->sFIFOMailBox[FIFONumber].RDTR >> 8);
+    627          
+    628            /* Get the data field */
+    629            RxMessage->Data[0] = (u32)0x000000FF & CAN->sFIFOMailBox[FIFONumber].RDLR;
+    630            RxMessage->Data[1] = (u32)0x000000FF & (CAN->sFIFOMailBox[FIFONumber].RDLR >> 8);
+    631            RxMessage->Data[2] = (u32)0x000000FF & (CAN->sFIFOMailBox[FIFONumber].RDLR >> 16);
+    632            RxMessage->Data[3] = (u32)0x000000FF & (CAN->sFIFOMailBox[FIFONumber].RDLR >> 24);
+    633          
+    634            RxMessage->Data[4] = (u32)0x000000FF & CAN->sFIFOMailBox[FIFONumber].RDHR;
+    635            RxMessage->Data[5] = (u32)0x000000FF & (CAN->sFIFOMailBox[FIFONumber].RDHR >> 8);
+    636            RxMessage->Data[6] = (u32)0x000000FF & (CAN->sFIFOMailBox[FIFONumber].RDHR >> 16);
+    637            RxMessage->Data[7] = (u32)0x000000FF & (CAN->sFIFOMailBox[FIFONumber].RDHR >> 24);
+    638          
+    639            /* Release the FIFO */
+    640            CAN_FIFORelease(FIFONumber);
+    641          }
+    642          
+    643          /*******************************************************************************
+    644          * Function Name  : CAN_Sleep
+    645          * Description    : Enters the low power mode.
+    646          * Input          : None.
+    647          * Output         : None.
+    648          * Return         : CANSLEEPOK if sleep entered, CANSLEEPFAILED in an other case.
+    649          *******************************************************************************/
+    650          u8 CAN_Sleep(void)
+    651          {
+    652            u8 SleepStatus = 0;
+    653          
+    654            /* Sleep mode entering request */
+    655            CAN->MCR |= CAN_MCR_SLEEP;
+    656            SleepStatus = CANSLEEPOK;
+    657          
+    658            /* Sleep mode status */
+    659            if ((CAN->MSR&CAN_MCR_SLEEP) == 0) //if ((CAN->MCR&CAN_MCR_SLEEP) == 0)--D.JIANG
+    660            {
+    661              /* Sleep mode not entered */
+    662              SleepStatus = CANSLEEPFAILED;
+    663            }
+    664          
+    665            /* At this step, sleep mode status */
+    666            return SleepStatus;
+    667          }
+    668          
+    669          /*******************************************************************************
+    670          * Function Name  : CAN_WakeUp
+    671          * Description    : Wakes the CAN up.
+    672          * Input          : None.
+    673          * Output         : None.
+    674          * Return         : CANWAKEUPOK if sleep mode left, CANWAKEUPFAILED in an other
+    675          *                  case.
+    676          *******************************************************************************/
+    677          u8 CAN_WakeUp(void)
+    678          {
+    679            u8 WakeUpStatus = 0;
+    680          
+    681            /* Wake up request */
+    682            CAN->MCR &= ~CAN_MCR_SLEEP;
+    683            WakeUpStatus = CANWAKEUPFAILED;
+    684          
+    685            /* Sleep mode status */
+    686            if ((CAN->MSR&CAN_MCR_SLEEP) == 0) //  if ((CAN->MCR&CAN_MCR_SLEEP) == 0)
+    687            {
+    688              /* Sleep mode exited */
+    689              WakeUpStatus = CANWAKEUPOK;
+    690            }
+    691          
+    692            /* At this step, sleep mode status */
+    693            return WakeUpStatus;
+    694          }
+    695          
+    696          /*******************************************************************************
+    697          * Function Name  : CAN_GetFlagStatus
+    698          * Description    : Checks whether the specified CAN flag is set or not.
+    699          * Input          : CAN_FLAG: specifies the flag to check.
+    700          *                  This parameter can be: CAN_FLAG_EWG, CAN_FLAG_EPV or
+    701          *                                         CAN_FLAG_BOF.
+    702          * Output         : None.
+    703          * Return         : The new state of CAN_FLAG (SET or RESET).
+    704          *******************************************************************************/
+    705          FlagStatus CAN_GetFlagStatus(u32 CAN_FLAG)
+    706          {
+    707            FlagStatus bitstatus = RESET;
+    708          
+    709            /* Check the parameters */
+    710            assert(IS_CAN_FLAG(CAN_FLAG));
+    711          
+    712            /* Check the status of the specified CAN flag */
+    713            if ((CAN->ESR & CAN_FLAG) != (u32)RESET)
+    714            {
+    715              /* CAN_FLAG is set */
+    716              bitstatus = SET;
+    717            }
+    718            else
+    719            {
+    720              /* CAN_FLAG is reset */
+    721              bitstatus = RESET;
+    722            }
+    723            /* Return the CAN_FLAG status */
+    724            return  bitstatus;
+    725          }
+    726          
+    727          /*******************************************************************************
+    728          * Function Name  : CAN_ClearFlag
+    729          * Description    : Clears the CAN's pending flags.
+    730          * Input          : CAN_FLAG: specifies the flag to clear.
+    731          * Output         : None.
+    732          * Return         : None.
+    733          *******************************************************************************/
+    734          void CAN_ClearFlag(u32 CAN_FLAG)
+    735          {
+    736            /* Check the parameters */
+    737            assert(IS_CAN_FLAG(CAN_FLAG));
+    738          
+    739            /* Clear the selected CAN flags */
+    740            CAN->ESR &= ~CAN_FLAG;
+    741          }
+    742          
+    743          /*******************************************************************************
+    744          * Function Name  : CAN_GetITStatus
+    745          * Description    : Checks whether the specified CAN interrupt has occurred or
+    746          *                  not.
+    747          * Input          : CAN_IT: specifies the CAN interrupt source to check.
+    748          *                  This parameter can be: CAN_IT_RQCP0, CAN_IT_RQCP1, CAN_IT_RQCP2,
+    749          *                                         CAN_IT_FF0, CAN_IT_FOV0, CAN_IT_FF1,
+    750          *                                         CAN_IT_FOV1, CAN_IT_EWG, CAN_IT_EPV,
+    751          *                                         CAN_IT_BOF, CAN_IT_WKU or CAN_IT_SLK.
+    752          * Output         : None.
+    753          * Return         : The new state of CAN_IT (SET or RESET).
+    754          *******************************************************************************/
+    755          ITStatus CAN_GetITStatus(u32 CAN_IT)
+    756          {
+    757            ITStatus pendingbitstatus = RESET;
+    758          
+    759            /* Check the parameters */
+    760            assert(IS_CAN_ITStatus(CAN_IT));
+    761          
+    762            switch (CAN_IT)
+    763            {
+    764              case CAN_IT_RQCP0:
+    765                pendingbitstatus = CheckITStatus(CAN->TSR, CAN_TSR_RQCP0);
+    766                break;
+    767              case CAN_IT_RQCP1:
+    768                pendingbitstatus = CheckITStatus(CAN->TSR, CAN_TSR_RQCP1);
+    769                break;
+    770              case CAN_IT_RQCP2:
+    771                pendingbitstatus = CheckITStatus(CAN->TSR, CAN_TSR_RQCP2);
+    772                break;
+    773              case CAN_IT_FF0:
+    774                pendingbitstatus = CheckITStatus(CAN->RF0R, CAN_RF0R_FULL0);
+    775                break;
+    776              case CAN_IT_FOV0:
+    777                pendingbitstatus = CheckITStatus(CAN->RF0R, CAN_RF0R_FOVR0);
+    778                break;
+    779              case CAN_IT_FF1:
+    780                pendingbitstatus = CheckITStatus(CAN->RF1R, CAN_RF1R_FULL1);
+    781                break;
+    782              case CAN_IT_FOV1:
+    783                pendingbitstatus = CheckITStatus(CAN->RF1R, CAN_RF1R_FOVR1);
+    784                break;
+    785              case CAN_IT_EWG:
+    786                pendingbitstatus = CheckITStatus(CAN->ESR, CAN_ESR_EWGF);
+    787                break;
+    788              case CAN_IT_EPV:
+    789                pendingbitstatus = CheckITStatus(CAN->ESR, CAN_ESR_EPVF);
+    790                break;
+    791              case CAN_IT_BOF:
+    792                pendingbitstatus = CheckITStatus(CAN->ESR, CAN_ESR_BOFF);
+    793                break;
+    794              case CAN_IT_SLK:
+    795                pendingbitstatus = CheckITStatus(CAN->MSR, CAN_MSR_SLAKI);
+    796                break;
+    797              case CAN_IT_WKU:
+    798                pendingbitstatus = CheckITStatus(CAN->MSR, CAN_MSR_WKUI);
+    799                break;
+    800          
+    801              default :
+    802                pendingbitstatus = RESET;
+    803                break;
+    804            }
+    805          
+    806            /* Return the CAN_IT status */
+    807            return  pendingbitstatus;
+    808          }
+    809          
+    810          /*******************************************************************************
+    811          * Function Name  : CAN_ClearITPendingBit
+    812          * Description    : Clears the CAN’s interrupt pending bits.
+    813          * Input          : CAN_IT: specifies the interrupt pending bit to clear.
+    814          * Output         : None.
+    815          * Return         : None.
+    816          *******************************************************************************/
+    817          void CAN_ClearITPendingBit(u32 CAN_IT)
+    818          {
+    819            /* Check the parameters */
+    820            assert(IS_CAN_ITStatus(CAN_IT));
+    821          
+    822            switch (CAN_IT)
+    823            {
+    824              case CAN_IT_RQCP0:
+    825                CAN->TSR = CAN_TSR_RQCP0; /* rc_w1*/
+    826                break;
+    827              case CAN_IT_RQCP1:
+    828                CAN->TSR = CAN_TSR_RQCP1; /* rc_w1*/
+    829                break;
+    830              case CAN_IT_RQCP2:
+    831                CAN->TSR = CAN_TSR_RQCP2; /* rc_w1*/
+    832                break;
+    833              case CAN_IT_FF0:
+    834                CAN->RF0R = CAN_RF0R_FULL0; /* rc_w1*/
+    835                break;
+    836              case CAN_IT_FOV0:
+    837                CAN->RF0R = CAN_RF0R_FOVR0; /* rc_w1*/
+    838                break;
+    839              case CAN_IT_FF1:
+    840                CAN->RF1R = CAN_RF1R_FULL1; /* rc_w1*/
+    841                break;
+    842              case CAN_IT_FOV1:
+    843                CAN->RF1R = CAN_RF1R_FOVR1; /* rc_w1*/
+    844                break;
+    845              case CAN_IT_EWG:
+    846                CAN->ESR &= ~ CAN_ESR_EWGF; /* rw */
+    847                break;
+    848              case CAN_IT_EPV:
+    849                CAN->ESR &= ~ CAN_ESR_EPVF; /* rw */
+    850                break;
+    851              case CAN_IT_BOF:
+    852                CAN->ESR &= ~ CAN_ESR_BOFF; /* rw */
+    853                break;
+    854              case CAN_IT_WKU:
+    855                CAN->MSR = CAN_MSR_WKUI;  /* rc_w1*/
+    856                break;
+    857              case CAN_IT_SLK:
+    858                CAN->MSR = CAN_MSR_SLAKI;  /* rc_w1*/
+    859                break;
+    860              default :
+    861                break;
+    862            }
+    863          }
+    864          
+    865          /*******************************************************************************
+    866          * Function Name  : CheckITStatus
+    867          * Description    : Checks whether the CAN interrupt has occurred or not.
+    868          * Input          : CAN_Reg: specifies the CAN interrupt register to check.
+    869          *                  It_Bit: specifies the interrupt source bit to check.
+    870          * Output         : None.
+    871          * Return         : The new state of the CAN Interrupt (SET or RESET).
+    872          *******************************************************************************/
+    873          static ITStatus CheckITStatus(u32 CAN_Reg, u32 It_Bit)
+    874          {
+    875            ITStatus pendingbitstatus = RESET;
+    876          
+    877            if ((CAN_Reg & It_Bit) != (u32)RESET)
+    878            {
+    879              /* CAN_IT is set */
+    880              pendingbitstatus = SET;
+    881            }
+    882            else
+    883            {
+    884              /* CAN_IT is reset */
+    885              pendingbitstatus = RESET;
+    886            }
+    887          
+    888            return pendingbitstatus;
+    889          }
+    890          
+    891          /******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+     Function              CSTACK
+     --------              ------
+     CAN_CancelTransmit        8
+     CAN_ClearFlag             8
+     CAN_ClearITPendingBit     8
+     CAN_DeInit                4
+     CAN_FIFORelease           8
+     CAN_FilterInit            8
+     CAN_GetFlagStatus         8
+     CAN_GetITStatus           8
+     CAN_ITConfig             12
+     CAN_Init                  8
+     CAN_MessagePending        8
+     CAN_Receive              12
+     CAN_Sleep                 0
+     CAN_StructInit            0
+     CAN_Transmit             12
+     CAN_TransmitStatus       12
+     CAN_WakeUp                0
+     CheckITStatus             0
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     CAN_DeInit                       24
+     CAN_Init                        572
+     CAN_FilterInit                  458
+     CAN_StructInit                   46
+     CAN_ITConfig                    144
+     CAN_Transmit                    484
+     CAN_TransmitStatus              220
+     CAN_CancelTransmit               88
+     CAN_FIFORelease                  48
+     CAN_MessagePending               64
+     CAN_Receive                     348
+     CAN_Sleep                        36
+     CAN_WakeUp                       36
+     CAN_GetFlagStatus                52
+     CAN_ClearFlag                    44
+     CAN_GetITStatus                 316
+     CAN_ClearITPendingBit           286
+     CheckITStatus                    18
+     ??DataTable10                     4
+     ??DataTable40                     4
+     ??DataTable71                     4
+     ??DataTable75                     4
+     ??DataTable106                    4
+     ??DataTable115                    4
+     ??DataTable142                    4
+     ??DataTable144                    4
+     ??DataTable158                    4
+     ??DataTable173                    4
+     ?<Constant "C:\\David JIANG\\ST MCU...">
+                                      88
+      Others                          16
+
+ 
+ 3 340 bytes in segment CODE
+    88 bytes in segment DATA_C
+ 
+ 3 324 bytes of CODE  memory (+ 16 bytes shared)
+    88 bytes of CONST memory
+
+Errors: none
+Warnings: none

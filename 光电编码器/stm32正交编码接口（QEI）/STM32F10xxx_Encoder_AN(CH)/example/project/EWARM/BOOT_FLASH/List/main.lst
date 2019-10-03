@@ -1,0 +1,455 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32               15/May/2008  12:06:29 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  thumb                                                #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\source\main.c                #
+#    Command line    =  "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\source\main.c" -D            #
+#                       VECT_TAB_FLASH -lcN "C:\David JIANG\ST               #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -lb  #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -o   #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\" -z3   #
+#                       --no_cse --no_unroll --no_inline --no_code_motion    #
+#                       --no_tbaa --no_clustering --no_scheduling --debug    #
+#                       --cpu_mode thumb --endian little --cpu cortex-M3     #
+#                       --stack_align 4 --require_prototypes --fpu None      #
+#                       --dlib_config "C:\Program Files\IAR                  #
+#                       Systems\Embedded Workbench                           #
+#                       4.0\arm\LIB\dl7mptnnl8f.h" -I "C:\David JIANG\ST     #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\" -I "C:\David         #
+#                       JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM                 #
+#                       Encoder\example\project\EWARM\..\include\" -I        #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\..\..\FWLib\inc\" -I   #
+#                       "C:\Program Files\IAR Systems\Embedded Workbench     #
+#                       4.0\arm\INC\"                                        #
+#    List file       =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\main.l #
+#                       st                                                   #
+#    Object file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\main.r7 #
+#                       9                                                    #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM Encoder\example\project\source\main.c
+      1          /******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+      2          * File Name          : main.c
+      3          * Author             : Jian-guo JIANG
+      4          * Date First Issued  : 2008.5.14
+      5          * Description        : Main program body
+      6          ********************************************************************************
+      7          * History:
+      8          * 2008.5.14: V1.0
+      9          ********************************************************************************
+     10          * THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     11          * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+     12          * AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+     13          * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+     14          * CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+     15          * INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     16          *******************************************************************************/
+     17          
+     18          /* Includes ------------------------------------------------------------------*/
+     19          #include "stm32f10x_lib.h"
+     20          #include "lcd.h"
+     21          #include "stm32f10x_encoder.h"
+     22          #include "stm32f10x_Timebase.h"
+     23          
+     24          /* Local includes ------------------------------------------------------------*/
+     25          /* Private typedef -----------------------------------------------------------*/
+     26          /* Private define ------------------------------------------------------------*/
+     27          #define KEY_2_PORT GPIOD
+     28          #define KEY_2_BIT  GPIO_Pin_3
+     29          
+     30          #define KEY_3_PORT GPIOD
+     31          #define KEY_3_BIT  GPIO_Pin_4
+     32          
+     33          // These are defines for reading the buttonS
+     34          #define  NOKEY      (u8)0
+     35          #define  KEY2       (u8)1
+     36          #define  KEY3       (u8)2
+     37          #define  KEY_HOLD   (u8)3
+     38          
+     39          /* Private macro -------------------------------------------------------------*/
+     40          /* Private variables ---------------------------------------------------------*/
+     41          static DisplayType DisplayStatus = DISPLAY_TIMCNT;
+     42          static u8 bKey = NOKEY;
+     43          static u8 bPrevious_key = NOKEY;
+     44          
+     45          /* Private functions ---------------------------------------------------------*/
+     46          void RCC_Configuration(void);
+     47          void GPIO_Configuration(void);
+     48          void NVIC_Configuration(void);
+     49          void LcdShow_Init(void);
+     50          void KEYS_Init(void);
+     51          u8 KEYS_Read( void );
+     52          
+     53          /*******************************************************************************
+     54          * Function Name  : main
+     55          * Description    : Main program
+     56          * Input          : None
+     57          * Output         : None
+     58          * Return         : None
+     59          *******************************************************************************/
+     60          int main(void)
+     61          {
+     62          
+     63          #ifdef DEBUG
+     64            debug();
+     65          #endif
+     66          
+     67            /* System Clocks Configuration */
+     68            RCC_Configuration();
+     69          
+     70            /* GPIO ports pins Configuration */
+     71            GPIO_Configuration();
+     72          
+     73            /* NVIC Configuration */
+     74            NVIC_Configuration();
+     75          
+     76            /* Configure the systick */
+     77            TB_Init();
+     78            ENC_Init();
+     79            
+     80            LcdShow_Init();
+     81            KEYS_Init();
+     82          
+     83            while(1)
+     84            {    
+     85              bKey = KEYS_Read();    // read key pushed (if any...)
+     86              if (bKey == KEY2)
+     87              {
+     88                if (DisplayStatus == DISPLAY_W) DisplayStatus = DISPLAY_TIMCNT;
+     89                else DisplayStatus++;
+     90              }
+     91              
+     92              if (TB_DisplayDelay_IsElapsed() == TRUE)
+     93              {
+     94                TB_Set_DisplayDelay_500us(100);  // 50ms    
+     95                LCD_Display(DisplayStatus);            
+     96              }    
+     97            }
+     98          }
+     99          
+    100          /*******************************************************************************
+    101          * Function Name  : RCC_Configuration
+    102          * Description    : Configures the different system clocks.
+    103          * Input          : None
+    104          * Output         : None
+    105          * Return         : None
+    106          *******************************************************************************/
+    107          void RCC_Configuration(void)
+    108          {
+    109            ErrorStatus HSEStartUpStatus;
+    110          
+    111            /* RCC system reset(for debug purpose) */
+    112          //  RCC_DeInit();
+    113          
+    114            /* Enable HSE */
+    115            RCC_HSEConfig(RCC_HSE_ON);
+    116          
+    117            /* Wait till HSE is ready */
+    118            HSEStartUpStatus = RCC_WaitForHSEStartUp();
+    119          
+    120            if(HSEStartUpStatus == SUCCESS)
+    121            {
+    122              /* HCLK = SYSCLK */
+    123              RCC_HCLKConfig(RCC_SYSCLK_Div1);
+    124          
+    125              /* PCLK2 = HCLK */
+    126              RCC_PCLK2Config(RCC_HCLK_Div1);
+    127          
+    128              /* PCLK1 = HCLK/2 */
+    129              RCC_PCLK1Config(RCC_HCLK_Div2);
+    130          
+    131              /* ADCCLK = PCLK2/6 */
+    132              RCC_ADCCLKConfig(RCC_PCLK2_Div6);
+    133          
+    134              /* Flash 2 wait state */
+    135              FLASH_SetLatency(FLASH_Latency_2);
+    136          
+    137              /* Enable Prefetch Buffer */
+    138              FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);
+    139          
+    140              /* PLLCLK = 8MHz * 9 = 72 MHz */
+    141              RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_9);
+    142          
+    143              /* Enable PLL */
+    144              RCC_PLLCmd(ENABLE);
+    145          
+    146              /* Wait till PLL is ready */
+    147              while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET)
+    148              {
+    149              }
+    150          
+    151              /* Select PLL as system clock source */
+    152              RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
+    153          
+    154              /* Wait till PLL is used as system clock source */
+    155              while(RCC_GetSYSCLKSource() != 0x08)
+    156              {
+    157              }
+    158            }
+    159          
+    160            /* Enable GPIOA, GPIOB, GPIOC, GPIOD, GPIOE and AFIO clocks */
+    161            RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB |RCC_APB2Periph_GPIOC
+    162                   | RCC_APB2Periph_GPIOD | RCC_APB2Periph_GPIOE | RCC_APB2Periph_AFIO, ENABLE);
+    163          
+    164            /* TIM2 clocks enable */
+    165            RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+    166          
+    167            /* CAN Periph clock enable */
+    168            RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN, ENABLE);
+    169          }
+    170          
+    171          /*******************************************************************************
+    172          * Function Name  : GPIO_Configuration
+    173          * Description    : Configures the different GPIO ports.
+    174          * Input          : None
+    175          * Output         : None
+    176          * Return         : None
+    177          *******************************************************************************/
+    178          void GPIO_Configuration(void)
+    179          {
+    180            GPIO_InitTypeDef GPIO_InitStructure;
+    181          
+    182            /* Configure PC.04 -- PC.11 as Output push-pull */
+    183            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 |GPIO_Pin_6 | GPIO_Pin_7
+    184                  | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11;
+    185            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    186            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    187            GPIO_Init(GPIOC, &GPIO_InitStructure);
+    188          
+    189            /* Configure PD.03, PC.04, PC.11 -- PC.15 as input floating */
+    190            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_11 | GPIO_Pin_12 |
+    191                GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+    192            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    193            GPIO_Init(GPIOD, &GPIO_InitStructure);
+    194          
+    195            /* Configure PE.00 -- PE.15 as Output push-pull */
+    196            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All;
+    197            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    198            GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    199            GPIO_Init(GPIOE, &GPIO_InitStructure);
+    200          }
+    201          
+    202          /*******************************************************************************
+    203          * Function Name  : NVIC_Configuration
+    204          * Description    : Configures the NVIC and Vector Table base address.
+    205          * Input          : None
+    206          * Output         : None
+    207          * Return         : None
+    208          *******************************************************************************/
+    209          void NVIC_Configuration(void)
+    210          {
+    211            NVIC_InitTypeDef NVIC_InitStructure;
+    212          
+    213          #ifdef  VECT_TAB_RAM
+    214            /* Set the Vector Table base location at 0x20000000 */
+    215            NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0);
+    216          #else  /* VECT_TAB_FLASH  */
+    217            /* Set the Vector Table base location at 0x08000000 */
+    218            NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
+    219          #endif
+    220          
+    221            /* Configure the Priority Group to 2 bits */
+    222            NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+    223          
+    224            /* enabling interrupt */
+    225            NVIC_InitStructure.NVIC_IRQChannel=TIM2_IRQChannel;
+    226            NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    227            NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    228            NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    229            NVIC_Init(&NVIC_InitStructure);  
+    230          }
+    231          
+    232          /*******************************************************************************
+    233          * Function Name  : LcdShow_Init
+    234          * Description    : Configure the lcd dispaly: TIM2 initialize in Output Compare
+    235          *                  Timing Mode
+    236          * Input          : None
+    237          * Return         : None
+    238          * Comment        : TIM2 Configuration: Output Compare Timing Mode:
+    239                             TIM2CLK = 36 *2 =72MHz, Prescaler = 17, TIM2 counter clock = 4 MHz
+    240                             TIM2 update Period = ARR / TIM2 counter Period = 2 ms
+    241                             CC1 OC period = 1ms
+    242          *******************************************************************************/
+    243          void LcdShow_Init(void)
+    244          {
+    245            TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+    246            TIM_OCInitTypeDef  TIM_OCInitStructure;
+    247          
+    248            /* Time base configuration */
+    249            TIM_TimeBaseStructure.TIM_Period = 8000;
+    250            TIM_TimeBaseStructure.TIM_Prescaler = 17;
+    251            TIM_TimeBaseStructure.TIM_ClockDivision = 0x0;
+    252            TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    253            TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+    254          
+    255            TIM_ARRPreloadConfig(TIM2,DISABLE);
+    256            /* only counter overflow/underflow generate U interrupt */
+    257            TIM_UpdateRequestConfig(TIM2,TIM_UpdateSource_Regular);
+    258          
+    259            /* Output Compare Timing Mode configuration: Channel1 */
+    260            TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_Timing;
+    261            TIM_OCInitStructure.TIM_Channel = TIM_Channel_1;
+    262            TIM_OCInitStructure.TIM_Pulse = 4000;
+    263            TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    264            TIM_OCInit(TIM2, &TIM_OCInitStructure);
+    265          
+    266            TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Disable);
+    267          
+    268            /* TIM IT enable */
+    269            TIM_ITConfig(TIM2, TIM_IT_CC1 | TIM_IT_Update, ENABLE);
+    270          
+    271            /* TIM2 enable counter */
+    272            TIM_Cmd(TIM2, ENABLE);
+    273          }
+    274          
+    275          /*******************************************************************************
+    276          * Function Name  : KEYS_Init
+    277          * Description    : Init GPIOs for button management
+    278          * Input          : None
+    279          * Output         : None
+    280          * Return         : None
+    281          *******************************************************************************/
+    282          void KEYS_Init(void)
+    283          {
+    284            GPIO_InitTypeDef GPIO_InitStructure;
+    285              
+    286            /* Enable GPIOD clock */
+    287            RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
+    288           
+    289            GPIO_StructInit(&GPIO_InitStructure);
+    290            
+    291            /* Joystick GPIOs configuration*/
+    292            
+    293            GPIO_InitStructure.GPIO_Pin = KEY_2_BIT;
+    294            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    295            GPIO_Init(KEY_2_PORT, &GPIO_InitStructure);
+    296            
+    297            GPIO_InitStructure.GPIO_Pin = KEY_3_BIT;
+    298            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    299            GPIO_Init(KEY_3_PORT, &GPIO_InitStructure);    
+    300          }
+    301          
+    302          /*******************************************************************************
+    303          * Function Name  : KEYS_Read
+    304          * Description    : Reads key from demoboard.
+    305          * Input          : None
+    306          * Output         : None
+    307          * Return         : Return KEY2,KEY3, KEY_HOLD or NOKEY
+    308          *******************************************************************************/
+    309          u8 KEYS_Read( void )
+    310          {
+    311            /* "KEY2" key is pressed */
+    312            if(!GPIO_ReadInputDataBit(KEY_2_PORT, KEY_2_BIT))
+    313            {
+    314              if (bPrevious_key == KEY2) 
+    315              {
+    316                return KEY_HOLD;
+    317              }
+    318              else
+    319              {
+    320                bPrevious_key = KEY2;
+    321                return KEY2;
+    322              }
+    323            }
+    324            /* "KEY3" key is pressed */
+    325            else if(!GPIO_ReadInputDataBit(KEY_3_PORT, KEY_3_BIT))
+    326            {
+    327              if (bPrevious_key == KEY3) 
+    328              {
+    329                return KEY_HOLD;
+    330              }
+    331              else
+    332              {
+    333                bPrevious_key = KEY3;
+    334                return KEY3;
+    335              }
+    336            }    
+    337            /* No key is pressed */
+    338            else
+    339            {
+    340              bPrevious_key = NOKEY;
+    341              return NOKEY;
+    342            }
+    343          }
+    344          
+    345          #ifdef  DEBUG
+    346          /*******************************************************************************
+    347          * Function Name  : assert_failed
+    348          * Description    : Reports the name of the source file and the source line number
+    349          *                  where the assert error has occurred.
+    350          * Input          : - file: pointer to the source file name
+    351          *                  - line: assert error line source number
+    352          * Output         : None
+    353          * Return         : None
+    354          *******************************************************************************/
+    355          void assert_failed(u8* file, u32 line)
+    356          {
+    357            /* User can add his own implementation to report the file name and line number,
+    358               ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    359          
+    360            /* Infinite loop */
+    361            while (1)
+    362            {
+    363          
+    364            }
+    365          }
+    366          #endif
+    367          /******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+     Function           CSTACK
+     --------           ------
+     GPIO_Configuration     8
+     KEYS_Init              8
+     KEYS_Read              4
+     LcdShow_Init          20
+     NVIC_Configuration     8
+     RCC_Configuration      4
+     assert_failed          0
+     main                   4
+
+
+   Segment part sizes:
+
+     Function/Label     Bytes
+     --------------     -----
+     DisplayStatus         1
+     bKey                  1
+     bPrevious_key         1
+     main                108
+     RCC_Configuration   128
+     GPIO_Configuration  104
+     NVIC_Configuration   56
+     LcdShow_Init        136
+     KEYS_Init            66
+     KEYS_Read            88
+     ??assert_failed_0     2
+     ??DataTable4          4
+      Others             284
+
+ 
+ 964 bytes in segment CODE
+   3 bytes in segment DATA_Z
+  12 bytes in segment INITTAB
+ 
+ 692 bytes of CODE memory (+ 284 bytes shared)
+   3 bytes of DATA memory
+
+Errors: none
+Warnings: none

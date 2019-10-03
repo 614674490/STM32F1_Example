@@ -1,0 +1,17 @@
+#ifndef __ENCODER_h
+#define __ENCODER_h
+#include "sys.h"
+///////////////////////////////////////////////////////
+//日期:2015.10.11
+//地点：汕头大学
+//作者：姚利
+
+//////////////////////////////////////////////////////
+extern u32 TURN,TURN1,TURN2,TURN3;
+void Encoder_Init(void);
+#endif
+
+
+
+
+

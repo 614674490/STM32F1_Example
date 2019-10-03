@@ -1,0 +1,198 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32               15/May/2008  12:06:29 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  thumb                                                #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\source\stm32f10x_Timebase.c  #
+#    Command line    =  "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\source\stm32f10x_Timebase.c" #
+#                        -D VECT_TAB_FLASH -lcN "C:\David JIANG\ST           #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -lb  #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -o   #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\" -z3   #
+#                       --no_cse --no_unroll --no_inline --no_code_motion    #
+#                       --no_tbaa --no_clustering --no_scheduling --debug    #
+#                       --cpu_mode thumb --endian little --cpu cortex-M3     #
+#                       --stack_align 4 --require_prototypes --fpu None      #
+#                       --dlib_config "C:\Program Files\IAR                  #
+#                       Systems\Embedded Workbench                           #
+#                       4.0\arm\LIB\dl7mptnnl8f.h" -I "C:\David JIANG\ST     #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\" -I "C:\David         #
+#                       JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM                 #
+#                       Encoder\example\project\EWARM\..\include\" -I        #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\..\..\FWLib\inc\" -I   #
+#                       "C:\Program Files\IAR Systems\Embedded Workbench     #
+#                       4.0\arm\INC\"                                        #
+#    List file       =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\stm32f #
+#                       10x_Timebase.lst                                     #
+#    Object file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\stm32f1 #
+#                       0x_Timebase.r79                                      #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM Encoder\example\project\source\stm32f10x_Timebase.c
+      1          /******************** (C) COPYRIGHT 2007 STMicroelectronics ********************
+      2          * File Name          : stm32f10x_Timebase.c
+      3          * Author             : Jian-guo JIANG
+      4          * Date First Issued  : 2008.5.14
+      5          * Description        : This module handles time base. 
+      6          ********************************************************************************
+      7          * History:
+      8          * 2008.5.14: V1.0
+      9          ********************************************************************************
+     10          * THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     11          * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+     12          * AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+     13          * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+     14          * CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+     15          * INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     16          *******************************************************************************/
+     17          /* Includes ------------------------------------------------------------------*/
+     18          #include "stm32f10x_lib.h"
+     19          
+     20          /* Include of other module interface headers ---------------------------------*/
+     21          /* Local includes ------------------------------------------------------------*/
+     22          #include "stm32f10x_it.h"
+     23          #include "stm32f10x_Timebase.h"
+     24          #include "stm32f10x_encoder.h"
+     25          
+     26          /* Private typedef -----------------------------------------------------------*/
+     27          /* Private define ------------------------------------------------------------*/
+     28          /* Private macro -------------------------------------------------------------*/
+     29          /* Private variables ---------------------------------------------------------*/
+     30          static volatile u16 hTimebase_display_500us = 0;
+     31          static u16 hSpeedMeas_Timebase_500us = SPEED_SAMPLING_TIME;
+     32          
+     33          /*******************************************************************************
+     34          * Function Name  : TB_Init
+     35          * Description    : TimeBase peripheral initialization. The base time is set to 
+     36          *                  500usec and the related interrupt is enabled  
+     37          * Input          : None
+     38          * Output         : None
+     39          * Return         : None
+     40          *******************************************************************************/
+     41          void TB_Init(void)
+     42          {   
+     43            /* Select AHB clock(HCLK) as SysTick clock source */
+     44            SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
+     45            /* SysTick interrupt each 500usec with Core clock equal to 72MHz */
+     46            SysTick_SetReload(36000);
+     47            /* Enable SysTick Counter */
+     48            SysTick_CounterCmd(SysTick_Counter_Enable);
+     49          
+     50            /* Configure the SysTick handler priority */
+     51            NVIC_SystemHandlerPriorityConfig(SystemHandler_SysTick, 2, 0); 
+     52            /* Enable SysTick interrupt */
+     53            SysTick_ITConfig(ENABLE);
+     54          }
+     55          
+     56          /*******************************************************************************
+     57          * Function Name  : TB_Set_DisplayDelay_500us
+     58          * Description    : Set Delay utilized by main.c module.
+     59          * Input          : Time out value
+     60          * Output         : None
+     61          * Return         : None
+     62          *******************************************************************************/
+     63          void TB_Set_DisplayDelay_500us(u16 hDelay)
+     64          {
+     65            hTimebase_display_500us = hDelay;
+     66          }  
+     67          
+     68          /*******************************************************************************
+     69          * Function Name  : TB_DisplayDelay_IsElapsed
+     70          * Description    : Check if the delay set by TB_Set_DisplayDelay_500us is elapsed.   
+     71          * Input          : None
+     72          * Output         : True if delay is elapsed, false otherwise 
+     73          * Return         : None
+     74          *******************************************************************************/
+     75          bool TB_DisplayDelay_IsElapsed(void)
+     76          {
+     77           if (hTimebase_display_500us == 0)
+     78           {
+     79             return (TRUE);
+     80           }
+     81           else 
+     82           {
+     83             return (FALSE);
+     84           }
+     85          } 
+     86          
+     87          /*******************************************************************************
+     88          * Function Name  : SysTickHandler
+     89          * Description    : This function handles SysTick Handler.
+     90          * Input          : None
+     91          * Output         : None
+     92          * Return         : None
+     93          *******************************************************************************/
+     94          void SysTickHandler(void)
+     95          {   
+     96            if (hTimebase_display_500us != 0)  
+     97            {
+     98              hTimebase_display_500us --;
+     99            }
+    100           
+    101            if (hSpeedMeas_Timebase_500us !=0)
+    102            {
+    103              hSpeedMeas_Timebase_500us--;
+    104            }
+    105            else
+    106            {
+    107              hSpeedMeas_Timebase_500us = SPEED_SAMPLING_TIME;
+    108                  
+    109              //ENC_Calc_Average_Speed must be called ONLY every SPEED_MEAS_TIMEBASE ms
+    110              ENC_Calc_Average_Speed();    
+    111            }
+    112          }
+    113          
+    114          /******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+     Function                  CSTACK
+     --------                  ------
+     SysTickHandler                4
+     TB_DisplayDelay_IsElapsed     0
+     TB_Init                       4
+     TB_Set_DisplayDelay_500us     0
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     hTimebase_display_500us           2
+     hSpeedMeas_Timebase_500us         2
+     TB_Init                          48
+     TB_Set_DisplayDelay_500us         6
+     TB_DisplayDelay_IsElapsed        16
+     SysTickHandler                   56
+     ??DataTable4                      4
+     ?<Initializer for hSpeedMeas_Timebase_500us>
+                                       2
+      Others                          72
+
+ 
+ 178 bytes in segment CODE
+   2 bytes in segment DATA_I
+   2 bytes in segment DATA_ID
+   2 bytes in segment DATA_Z
+  24 bytes in segment INITTAB
+ 
+ 130 bytes of CODE  memory (+ 72 bytes shared)
+   2 bytes of CONST memory
+   4 bytes of DATA  memory
+
+Errors: none
+Warnings: none

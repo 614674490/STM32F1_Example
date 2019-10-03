@@ -1,0 +1,166 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32               15/May/2008  12:06:34 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  thumb                                                #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\stm32f10x_vector.c     #
+#    Command line    =  "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\stm32f10x_vector.c"    #
+#                       -D VECT_TAB_FLASH -lcN "C:\David JIANG\ST            #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -lb  #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\" -o   #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\" -z3   #
+#                       --no_cse --no_unroll --no_inline --no_code_motion    #
+#                       --no_tbaa --no_clustering --no_scheduling --debug    #
+#                       --cpu_mode thumb --endian little --cpu cortex-M3     #
+#                       --stack_align 4 --require_prototypes --fpu None      #
+#                       --dlib_config "C:\Program Files\IAR                  #
+#                       Systems\Embedded Workbench                           #
+#                       4.0\arm\LIB\dl7mptnnl8f.h" -I "C:\David JIANG\ST     #
+#                       MCU\Docs\STM32\AN_JIANG\TIM                          #
+#                       Encoder\example\project\EWARM\" -I "C:\David         #
+#                       JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM                 #
+#                       Encoder\example\project\EWARM\..\include\" -I        #
+#                       "C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM       #
+#                       Encoder\example\project\EWARM\..\..\FWLib\inc\" -I   #
+#                       "C:\Program Files\IAR Systems\Embedded Workbench     #
+#                       4.0\arm\INC\"                                        #
+#    List file       =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\List\stm32f #
+#                       10x_vector.lst                                       #
+#    Object file     =  C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM        #
+#                       Encoder\example\project\EWARM\BOOT_FLASH\Obj\stm32f1 #
+#                       0x_vector.r79                                        #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+C:\David JIANG\ST MCU\Docs\STM32\AN_JIANG\TIM Encoder\example\project\EWARM\stm32f10x_vector.c
+      1          /******************** (C) COPYRIGHT 2007 STMicroelectronics ********************
+      2          * File Name          : stm32f10x_vector.c
+      3          * Author             : MCD Application Team
+      4          * Date First Issued  : 02/19/2007
+      5          * Description        : This file contains the vector table for STM32F10x.
+      6          *                      After Reset the Cortex-M3 processor is in Thread mode,
+      7          *                      priority is Privileged, and the Stack is set to Main.
+      8          ********************************************************************************
+      9          * History:
+     10          * 05/21/2007: V0.3
+     11          * 04/02/2007: V0.2
+     12          * 02/19/2007: V0.1
+     13          ********************************************************************************
+     14          * THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+     15          * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+     16          * AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+     17          * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+     18          * CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+     19          * INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+     20          *******************************************************************************/
+     21          
+     22          /* Includes ------------------------------------------------------------------*/
+     23          #include "stm32f10x_lib.h"
+     24          #include "stm32f10x_it.h"
+     25          #include "stm32f10x_encoder.h"
+     26          
+     27          /* Private typedef -----------------------------------------------------------*/
+     28          typedef void( *intfunc )( void );
+     29          typedef union { intfunc __fun; void * __ptr; } intvec_elem;
+     30          
+     31          /* Private define ------------------------------------------------------------*/
+     32          /* Private macro -------------------------------------------------------------*/
+     33          /* Private variables ---------------------------------------------------------*/
+     34          /* Private function prototypes -----------------------------------------------*/
+     35          /* Private functions ---------------------------------------------------------*/
+     36          
+     37          
+     38          #pragma language=extended
+     39          #pragma segment="CSTACK"
+     40          
+     41          void __program_start( void );
+     42          
+     43          #pragma location = "INTVEC"
+     44          /* STM32F10x Vector Table entries */
+     45          const intvec_elem __vector_table[] =
+     46          {
+     47            { .__ptr = __sfe( "CSTACK" ) },
+     48            __program_start,
+     49            NMIException,
+     50            HardFaultException,
+     51            MemManageException,
+     52            BusFaultException,
+     53            UsageFaultException,
+     54            0, 0, 0, 0,            /* Reserved */ 
+     55            SVCHandler,
+     56            DebugMonitor,
+     57            0,                      /* Reserved */
+     58            PendSVC,
+     59            SysTickHandler,
+     60            WWDG_IRQHandler,
+     61            PVD_IRQHandler,
+     62            TAMPER_IRQHandler,
+     63            RTC_IRQHandler,
+     64            FLASH_IRQHandler,
+     65            RCC_IRQHandler,
+     66            EXTI0_IRQHandler,
+     67            EXTI1_IRQHandler,
+     68            EXTI2_IRQHandler,
+     69            EXTI3_IRQHandler,
+     70            EXTI4_IRQHandler,
+     71            DMAChannel1_IRQHandler,
+     72            DMAChannel2_IRQHandler,
+     73            DMAChannel3_IRQHandler,
+     74            DMAChannel4_IRQHandler,
+     75            DMAChannel5_IRQHandler,
+     76            DMAChannel6_IRQHandler,
+     77            DMAChannel7_IRQHandler,
+     78            ADC_IRQHandler,
+     79            USB_HP_CAN_TX_IRQHandler,
+     80            USB_LP_CAN_RX0_IRQHandler,
+     81            CAN_RX1_IRQHandler,
+     82            CAN_SCE_IRQHandler,
+     83            EXTI9_5_IRQHandler,
+     84            TIM1_BRK_IRQHandler,
+     85            TIM1_UP_IRQHandler,
+     86            TIM1_TRG_COM_IRQHandler,
+     87            TIM1_CC_IRQHandler,
+     88            TIM2_IRQHandler,
+     89            TIM3_IRQHandler,
+     90            TIM4_IRQHandler,
+     91            I2C1_EV_IRQHandler,
+     92            I2C1_ER_IRQHandler,
+     93            I2C2_EV_IRQHandler,
+     94            I2C2_ER_IRQHandler,
+     95            SPI1_IRQHandler,
+     96            SPI2_IRQHandler,
+     97            USART1_IRQHandler,
+     98            USART2_IRQHandler,
+     99            USART3_IRQHandler,
+    100            EXTI15_10_IRQHandler,
+    101            RTCAlarm_IRQHandler,
+    102            USBWakeUp_IRQHandler,
+    103          };
+    104          
+    105          /******************* (C) COPYRIGHT 2007 STMicroelectronics *****END OF FILE****/
+    106          
+
+
+   Segment part sizes:
+
+     Function/Label Bytes
+     -------------- -----
+     __vector_table  236
+
+ 
+ 236 bytes in segment INTVEC
+ 
+ 236 bytes of CONST memory
+
+Errors: none
+Warnings: none
